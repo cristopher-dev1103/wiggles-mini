@@ -100,7 +100,7 @@ La forma más simple es **Cloudflare Workers** (plan gratuito):
 ```js
 export default {
   async fetch(request) {
-    const url = 'https://raw.githubusercontent.com/TU-USUARIO/wiggles-mini/main/irm.ps1';
+    const url = 'https://raw.githubusercontent.com/cristopher-dev1103/wiggles-mini/main/irm.ps1';
     const res = await fetch(url, { cf: { cacheTtl: 0 } });
     return new Response(res.body, {
       headers: {
@@ -123,6 +123,19 @@ irm "https://winscript.cc/irm" | iex
 > `irm` necesita que la respuesta sea texto plano. Un redirect 302 también sirve:
 > puedes crear una regla que mande `/irm` al raw de GitHub.
 
+### Enlace corto sin dominio propio
+
+Si todavía no tienes dominio, usa un acortador que redirija directo (sin página
+intermedia). El proyecto ya tiene uno:
+
+```powershell
+irm "https://tinyurl.com/wiggles-irm" | iex
+```
+
+Ventaja: funciona en segundos. Desventaja: depende de un servicio externo y el
+alias no se puede editar si lo creaste sin cuenta. Para algo permanente y con tu
+marca, usa el dominio propio con Cloudflare.
+
 ## 8. Seguridad del token
 
 El token solo permite **agregar filas** al libro, no leer ni borrar. Aun así:
@@ -136,7 +149,7 @@ El token solo permite **agregar filas** al libro, no leer ni borrar. Aun así:
 export default {
   async fetch(request, env) {
     const res = await fetch(
-      'https://raw.githubusercontent.com/TU-USUARIO/wiggles-mini/main/irm.ps1',
+      'https://raw.githubusercontent.com/cristopher-dev1103/wiggles-mini/main/irm.ps1',
       { headers: { authorization: `Bearer ${env.GITHUB_TOKEN}` } }
     );
     return new Response(res.body, {
