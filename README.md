@@ -193,14 +193,14 @@ Pensado para cuando se olvida el pendrive. Jeric solo pega:
 irm "https://raw.githubusercontent.com/cristopher-dev1103/wiggles-mini/main/irm.ps1" | iex
 ```
 
-Enlace corto (más fácil de recordar):
+Enlaces cortos (más fáciles de recordar):
 
 ```powershell
-irm "https://tinyurl.com/wiggles-irm" | iex
+irm "https://is.gd/wiggles" | iex
 ```
 
-El enlace corto redirige al `irm.ps1` del repositorio; si algún día cambias de
-repositorio, crea un alias nuevo.
+Respaldo: `https://tinyurl.com/wiggles-irm`. Ambos redirigen al `irm.ps1` del
+repositorio; si algún día cambias de repositorio, crea un alias nuevo.
 
 `irm.ps1` descarga la herramienta a `%TEMP%\WigglesMini`, pide administrador y la abre.
 Siempre trae la última versión publicada.
@@ -208,7 +208,7 @@ Siempre trae la última versión publicada.
 > En modo remoto los CSV y la cola quedan en `%TEMP%\WigglesMini\Data`. Si el equipo se
 > apaga o se limpia el temporal, se pierden; sincroniza antes de cerrar.
 
-Requisitos y pasos completos (incluido dominio propio tipo `winscript.cc/irm`):
+Requisitos y pasos completos (incluido dominio propio tipo `tudominio.com/irm`):
 **`Publicar-GitHub.md`**.
 
 > El modo remoto no guarda el paquete de Office; la instalación de Office sigue siendo

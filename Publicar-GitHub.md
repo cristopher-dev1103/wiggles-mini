@@ -89,12 +89,15 @@ repositorio, el siguiente `irm` ya trae la versión nueva (GitHub cachea ~5 minu
 - Edita el archivo en GitHub y confirma el cambio.
 - No hace falta recompilar nada: `irm` descarga siempre los `.ps1` actuales.
 
-## 7. Dominio propio (`winscript.cc/irm`) — opcional
+## 7. Dominio propio (`tudominio.com/irm`) — opcional
 
-Para que quede como el de Titus necesitas un dominio y algo que sirva el texto.
+Para que quede como el de Titus necesitas un dominio propio y algo que sirva el texto.
 La forma más simple es **Cloudflare Workers** (plan gratuito):
 
-1. Agrega `winscript.cc` a Cloudflare y apunta el DNS a Cloudflare.
+> `winscript.cc` ya está ocupado por otro proyecto público (Winscript); usa tu
+> propio dominio.
+
+1. Agrega tu dominio a Cloudflare y apunta el DNS a Cloudflare.
 2. Crea un Worker con este código:
 
 ```js
@@ -112,12 +115,12 @@ export default {
 };
 ```
 
-3. En el Worker: **Settings → Triggers → Custom Domains → Add** `winscript.cc`
-   (o una ruta `winscript.cc/irm*`).
+3. En el Worker: **Settings → Triggers → Custom Domains → Add** `tudominio.com`
+   (o una ruta `tudominio.com/irm*`).
 4. Prueba:
 
 ```powershell
-irm "https://winscript.cc/irm" | iex
+irm "https://tudominio.com/irm" | iex
 ```
 
 > `irm` necesita que la respuesta sea texto plano. Un redirect 302 también sirve:
@@ -126,15 +129,24 @@ irm "https://winscript.cc/irm" | iex
 ### Enlace corto sin dominio propio
 
 Si todavía no tienes dominio, usa un acortador que redirija directo (sin página
-intermedia). El proyecto ya tiene uno:
+intermedia). El proyecto ya tiene dos:
 
 ```powershell
-irm "https://tinyurl.com/wiggles-irm" | iex
+irm "https://is.gd/wiggles" | iex
 ```
+
+Respaldo: `https://tinyurl.com/wiggles-irm`.
 
 Ventaja: funciona en segundos. Desventaja: depende de un servicio externo y el
 alias no se puede editar si lo creaste sin cuenta. Para algo permanente y con tu
-marca, usa el dominio propio con Cloudflare.
+marca, usa un dominio propio con Cloudflare.
+
+Para crear otro alias (sin registro):
+
+```text
+https://is.gd/create.php?format=simple&url=URL_LARGA&shorturl=ALIAS
+https://tinyurl.com/api-create.php?url=URL_LARGA&alias=ALIAS
+```
 
 ## 8. Seguridad del token
 
