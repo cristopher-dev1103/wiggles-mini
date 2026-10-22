@@ -1,5 +1,5 @@
 ﻿# =============================================================================
-#  WIGGLES MINI  v1.0
+#  WIGGLES MINI  v1.1
 #  Inventario de equipos + utilidades para visitas a clientes.
 #  Un solo archivo, sin dependencias, 100% portable.
 # =============================================================================
@@ -9,7 +9,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $script:AppNombre  = 'WIGGLES MINI'
-$script:AppVersion = '1.0.0'
+$script:AppVersion = '1.1.0'
 
 # --- Ruta raiz (funciona desde USB, carpeta local o red) ---
 $script:Root = $PSScriptRoot
@@ -89,6 +89,43 @@ if (Test-Path $script:ConfigPath) {
         }
     } catch {
         Write-Log "config.json invalido: $($_.Exception.Message)" 'WARN'
+    }
+}
+
+# --- Catalogo de aplicaciones (winget) ---
+$script:AppsPath = Join-Path $script:Root 'apps.json'
+$script:AppsCatalogo = @()
+if (Test-Path $script:AppsPath) {
+    try {
+        $Catalogo = Get-Content -Path $script:AppsPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        foreach ($a in @($Catalogo.apps)) {
+            if (-not $a.Id) { continue }
+            $cat = [string]$a.Categoria
+            if (-not $cat) { $cat = 'Otras' }
+            $script:AppsCatalogo += [PSCustomObject]@{
+                Id           = [string]$a.Id
+                Nombre       = [string]$a.Nombre
+                Categoria    = $cat
+                Descripcion  = [string]$a.Descripcion
+                Recomendada  = [bool]$a.Recomendada
+                Seleccionada = $false
+            }
+        }
+    } catch {
+        Write-Log "apps.json invalido: $($_.Exception.Message)" 'WARN'
+    }
+}
+if ($script:AppsCatalogo.Count -eq 0) {
+    foreach ($id in @($script:Config['AppsBasicas'])) {
+        if (-not $id) { continue }
+        $script:AppsCatalogo += [PSCustomObject]@{
+            Id           = [string]$id
+            Nombre       = [string]$id
+            Categoria    = 'Basicas'
+            Descripcion  = 'Aplicacion basica'
+            Recomendada  = $true
+            Seleccionada = $false
+        }
     }
 }
 
@@ -304,6 +341,104 @@ $Xaml = @'
       <Setter Property="Foreground" Value="{StaticResource Texto}"/>
       <Setter Property="BorderBrush" Value="{StaticResource Borde}"/>
       <Setter Property="Padding" Value="8,6"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ComboBox">
+            <Grid>
+              <ToggleButton x:Name="ToggleButton" Focusable="False" ClickMode="Press"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                <ToggleButton.Template>
+                  <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1" CornerRadius="5">
+                      <Path Data="M 0 0 L 4 4 L 8 0" Stroke="#8494A6" StrokeThickness="1.5"
+                            HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    </Border>
+                  </ControlTemplate>
+                </ToggleButton.Template>
+              </ToggleButton>
+
+              <ContentPresenter IsHitTestVisible="False" Margin="9,0,28,0" VerticalAlignment="Center"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                TextElement.Foreground="{TemplateBinding Foreground}"/>
+
+              <Popup x:Name="PART_Popup" Placement="Bottom" AllowsTransparency="True" Focusable="False"
+                     PopupAnimation="Slide" IsOpen="{TemplateBinding IsDropDownOpen}">
+                <Border Background="#0F1520" BorderBrush="{StaticResource Borde}" BorderThickness="1"
+                        CornerRadius="5" MaxHeight="300"
+                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                  <ScrollViewer>
+                    <ItemsPresenter/>
+                  </ScrollViewer>
+                </Border>
+              </Popup>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="ItemContainerStyle">
+        <Setter.Value>
+          <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{StaticResource Texto}"/>
+            <Setter Property="Padding" Value="9,6"/>
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                  <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter/>
+                  </Border>
+                  <ControlTemplate.Triggers>
+                    <Trigger Property="IsHighlighted" Value="True">
+                      <Setter Property="Background" Value="#16324A"/>
+                    </Trigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style TargetType="CheckBox">
+      <Setter Property="Foreground" Value="{StaticResource Texto}"/>
+      <Setter Property="FontSize" Value="12.5"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="CheckBox">
+            <Grid Background="Transparent">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <Border x:Name="box" Width="16" Height="16" CornerRadius="3"
+                      BorderBrush="#3A4A5C" BorderThickness="1" Background="#0B0F14"
+                      VerticalAlignment="Center">
+                <Path x:Name="check" Data="M 2 7 L 6 11 L 13 3" Stroke="#00E676"
+                      StrokeThickness="2" Stretch="None" Visibility="Collapsed"/>
+              </Border>
+              <ContentPresenter Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="check" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="box" Property="BorderBrush" Value="#00E676"/>
+              </Trigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="box" Property="BorderBrush" Value="#29B6F6"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
     </Style>
 
     <Style x:Key="BarraProgreso" TargetType="ProgressBar">
@@ -572,6 +707,57 @@ $Xaml = @'
         </ScrollViewer>
       </TabItem>
 
+      <!-- ===== APLICACIONES ===== -->
+      <TabItem Header="APLICACIONES">
+        <Grid Margin="14,14,14,10">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <Grid Grid.Row="0" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="10"/>
+              <ColumnDefinition Width="210"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="txtBuscarApp" Grid.Column="0" Height="32"
+                     ToolTip="Buscar por nombre, descripcion o id de winget"/>
+            <TextBlock Name="txtBuscarHint" Text="Buscar aplicacion..." Foreground="#5B6B7C"
+                       FontSize="12" Margin="11,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+            <ComboBox Name="cmbCategoriaApp" Grid.Column="2" Height="32"/>
+          </Grid>
+
+          <TextBlock Name="txtAppsResumen" Grid.Row="1" Foreground="{StaticResource Tenue}"
+                     FontSize="11" Margin="0,0,0,6" Text="Cargando catalogo..."/>
+
+          <Border Grid.Row="2" Style="{StaticResource Tarjeta}" Padding="2" Margin="0,0,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+              <StackPanel Name="pnlApps" Margin="2"/>
+            </ScrollViewer>
+          </Border>
+
+          <Grid Grid.Row="3" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="btnInstalarApps" Content="INSTALAR SELECCIONADAS" Style="{StaticResource BotonVerde}"
+                    Height="36" Padding="16,0" Margin="0,0,8,0"/>
+            <Button Name="btnAppsRecomendadas" Grid.Column="1" Content="SELECCIONAR RECOMENDADAS"
+                    Height="36" Padding="12,0" Margin="0,0,8,0"/>
+            <Button Name="btnAppsLimpiar" Grid.Column="2" Content="LIMPIAR" Height="36" Padding="12,0"/>
+            <TextBlock Name="txtAppsEstado" Grid.Column="3" Foreground="{StaticResource Tenue}"
+                       FontSize="11" TextWrapping="Wrap" Margin="12,0,0,0"
+                       Text="Marca las aplicaciones y pulsa INSTALAR SELECCIONADAS."/>
+          </Grid>
+        </Grid>
+      </TabItem>
+
       <!-- ===== HERRAMIENTAS ===== -->
       <TabItem Header="HERRAMIENTAS">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -665,7 +851,8 @@ function Set-Ocupado {
     param([bool]$Activo)
     if ($Activo) {
         $Botonera = @('btnEscanear', 'btnGuardar', 'btnGuardarSiguiente', 'btnExcel', 'btnSincronizar',
-                      'btnOffice', 'btnApps', 'btnActivar', 'btnEdicion', 'btnExportarTodo', 'btnSyncTodo')
+                      'btnOffice', 'btnApps', 'btnInstalarApps', 'btnAppsRecomendadas', 'btnAppsLimpiar',
+                      'btnActivar', 'btnEdicion', 'btnExportarTodo', 'btnSyncTodo')
         foreach ($b in $Botonera) {
             try { $Window.FindName($b).IsEnabled = $false } catch {}
         }
@@ -673,7 +860,8 @@ function Set-Ocupado {
         $prgBarra.Visibility = 'Visible'
     } else {
         $Botonera = @('btnEscanear', 'btnGuardar', 'btnGuardarSiguiente', 'btnExcel', 'btnSincronizar',
-                      'btnOffice', 'btnApps', 'btnActivar', 'btnEdicion', 'btnExportarTodo', 'btnSyncTodo')
+                      'btnOffice', 'btnApps', 'btnInstalarApps', 'btnAppsRecomendadas', 'btnAppsLimpiar',
+                      'btnActivar', 'btnEdicion', 'btnExportarTodo', 'btnSyncTodo')
         foreach ($b in $Botonera) {
             try { $Window.FindName($b).IsEnabled = $true } catch {}
         }
@@ -1413,6 +1601,162 @@ function Start-QuitarOffice {
 # =============================================================================
 #  SOFTWARE
 # =============================================================================
+function Update-ResumenApps {
+    $sel = @($script:AppsCatalogo | Where-Object { $_.Seleccionada }).Count
+    try {
+        $palabra = if ($sel -eq 1) { 'seleccionada' } else { 'seleccionadas' }
+        $txtAppsResumen.Text = "{0} aplicaciones · {1} {2}" -f $script:AppsCatalogo.Count, $sel, $palabra
+    } catch {}
+}
+
+function Update-ListaApps {
+    if (-not $pnlApps) { return }
+
+    $texto = ''
+    try { $texto = ([string]$txtBuscarApp.Text).Trim().ToLower() } catch {}
+    try { $txtBuscarHint.Visibility = if ([string]::IsNullOrEmpty($txtBuscarApp.Text)) { 'Visible' } else { 'Collapsed' } } catch {}
+
+    $cat = 'Todas'
+    try { if ($cmbCategoriaApp.SelectedItem) { $cat = [string]$cmbCategoriaApp.SelectedItem } } catch {}
+
+    $pnlApps.Children.Clear()
+    $mostradas = 0
+
+    foreach ($app in @($script:AppsCatalogo)) {
+        if ($cat -ne 'Todas' -and $app.Categoria -ne $cat) { continue }
+
+        if ($texto) {
+            $buscable = ("{0} {1} {2}" -f $app.Nombre, $app.Descripcion, $app.Id).ToLower()
+            if (-not $buscable.Contains($texto)) { continue }
+        }
+
+        $cb = New-Object System.Windows.Controls.CheckBox
+        $cb.Margin = '8,4,8,4'
+        $cb.Tag = $app
+        $cb.IsChecked = [bool]$app.Seleccionada
+        $cb.ToolTip = $app.Id
+        if ($app.Recomendada) { $cb.FontWeight = 'SemiBold' }
+
+        $linea = New-Object System.Windows.Controls.TextBlock
+        $linea.TextWrapping = 'Wrap'
+        if ($app.Recomendada) {
+            $linea.Text = "★ {0} — {1}" -f $app.Nombre, $app.Descripcion
+            $linea.Foreground = '#E6EDF3'
+        } else {
+            $linea.Text = "{0} — {1}" -f $app.Nombre, $app.Descripcion
+            $linea.Foreground = '#B8C6D4'
+        }
+        $cb.Content = $linea
+        $cb.Add_Click({
+            $this.Tag.Seleccionada = [bool]$this.IsChecked
+            Update-ResumenApps
+        })
+
+        $pnlApps.Children.Add($cb) | Out-Null
+        $mostradas++
+    }
+
+    if ($mostradas -eq 0) {
+        $vacio = New-Object System.Windows.Controls.TextBlock
+        $vacio.Text = 'No hay aplicaciones que coincidan con la busqueda.'
+        $vacio.Foreground = '#8494A6'
+        $vacio.Margin = '12,12,12,12'
+        $pnlApps.Children.Add($vacio) | Out-Null
+    }
+
+    Update-ResumenApps
+}
+
+function Inicializar-CatalogoApps {
+    try {
+        $cats = @('Todas') + @($script:AppsCatalogo | ForEach-Object { $_.Categoria } | Sort-Object -Unique)
+        $cmbCategoriaApp.ItemsSource = $cats
+        $cmbCategoriaApp.SelectedIndex = 0
+    } catch {}
+    Update-ListaApps
+}
+
+function Start-InstalarSeleccionadas {
+    $sel = @($script:AppsCatalogo | Where-Object { $_.Seleccionada })
+    if ($sel.Count -eq 0) {
+        Show-Mensaje 'Marca al menos una aplicacion de la lista.' 'Aplicaciones'
+        return
+    }
+
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+        Show-Mensaje 'Winget no esta disponible en este equipo. Usa "Reparar winget" primero.' 'Aplicaciones' 'Warning'
+        return
+    }
+
+    $nombres = @($sel | Select-Object -First 12 | ForEach-Object { $_.Nombre })
+    $detalle = $nombres -join "`n"
+    if ($sel.Count -gt 12) { $detalle += "`n... y $($sel.Count - 12) mas" }
+
+    $resp = [System.Windows.MessageBox]::Show(
+        "Se instalaran $($sel.Count) aplicaciones:`n`n$detalle`n`n¿Continuar?",
+        'Instalar aplicaciones', 'YesNo', 'Question')
+    if ($resp -ne 'Yes') { return }
+
+    Set-Estado ("Instalando {0} aplicaciones..." -f $sel.Count) 'info'
+    $txtAppsEstado.Text = 'Instalando. Esto puede tardar varios minutos...'
+    Write-Log ("Instalar apps: " + (($sel | ForEach-Object { $_.Id }) -join ', '))
+
+    $paquete = [PSCustomObject]@{ Apps = $sel; Log = $script:LogFile }
+
+    Start-Tarea -Script {
+        param($paquete)
+        $ok = 0
+        $fallidos = @()
+
+        foreach ($a in $paquete.Apps) {
+            $estado = 'ERROR'
+            try {
+                $p = Start-Process -FilePath 'winget' -ArgumentList @(
+                    'install', '--id', $a.Id, '-e', '--source', 'winget', '--silent',
+                    '--accept-package-agreements', '--accept-source-agreements', '--disable-interactivity'
+                ) -Wait -PassThru -WindowStyle Hidden
+
+                if ($p.ExitCode -eq 0 -or $p.ExitCode -eq -1978335189) {
+                    $ok++
+                    $estado = 'OK'
+                } else {
+                    $fallidos += $a.Nombre
+                    $estado = "ERROR $($p.ExitCode)"
+                }
+            } catch {
+                $fallidos += $a.Nombre
+                $estado = "ERROR $($_.Exception.Message)"
+            }
+
+            try {
+                Add-Content -Path $paquete.Log -Encoding UTF8 -Value (
+                    '{0} [APP] {1} -> {2}' -f (Get-Date -Format 'HH:mm:ss'), $a.Id, $estado)
+            } catch {}
+        }
+
+        return [PSCustomObject]@{ Ok = $ok; Fallidos = @($fallidos) }
+    } -Argumentos @(, $paquete) -OnDone {
+        param($resultado, $errorTxt)
+        if ($resultado) {
+            $fallidos = @($resultado.Fallidos)
+            if ($fallidos.Count -eq 0) {
+                $msg = "Aplicaciones instaladas: $($resultado.Ok)"
+                Set-Estado $msg 'ok'
+                $txtAppsEstado.Text = $msg
+            } else {
+                $msg = "Instaladas: $($resultado.Ok) · fallidas: $($fallidos.Count)"
+                Set-Estado $msg 'warn'
+                $txtAppsEstado.Text = $msg + ': ' + ($fallidos -join ', ')
+            }
+            Write-Log $msg
+        } else {
+            Set-Estado 'No se pudieron instalar las aplicaciones' 'error'
+            $txtAppsEstado.Text = "Error: $errorTxt"
+            Write-Log "Apps: $errorTxt" 'ERROR'
+        }
+    }
+}
+
 function Start-AppsBasicas {
     $lista = @($script:Config['AppsBasicas'])
     if ($lista.Count -eq 0) { Show-Mensaje 'No hay aplicaciones configuradas en config.json' 'Aplicaciones'; return }
@@ -1636,6 +1980,17 @@ $btnResumenEquipo.Add_Click({ Show-ResumenEquipo })
 $btnOffice.Add_Click({ Start-InstalarOffice })
 $btnQuitarOffice.Add_Click({ Start-QuitarOffice })
 $btnApps.Add_Click({ Start-AppsBasicas })
+$btnInstalarApps.Add_Click({ Start-InstalarSeleccionadas })
+$btnAppsRecomendadas.Add_Click({
+    foreach ($app in @($script:AppsCatalogo)) { $app.Seleccionada = [bool]$app.Recomendada }
+    Update-ListaApps
+})
+$btnAppsLimpiar.Add_Click({
+    foreach ($app in @($script:AppsCatalogo)) { $app.Seleccionada = $false }
+    Update-ListaApps
+})
+$txtBuscarApp.Add_TextChanged({ Update-ListaApps })
+$cmbCategoriaApp.Add_SelectionChanged({ Update-ListaApps })
 $btnRuntimes.Add_Click({ Start-Runtimes })
 $btnWingetReparar.Add_Click({ Start-RepararWinget })
 
@@ -1664,6 +2019,7 @@ $Window.Add_Loaded({
     $txtAppsLista.Text = (@($script:Config['AppsBasicas']) -join ' · ')
 
     Actualizar-EstadoOffice
+    Inicializar-CatalogoApps
     Construir-PanelTools
     Update-Contadores
 

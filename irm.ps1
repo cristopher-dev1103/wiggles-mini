@@ -26,6 +26,7 @@ $Archivos = @(
     'WigglesMini.ps1'
     'WigglesCore.ps1'
     'config.json'
+    'apps.json'
     'README.md'
     'Sheets\Code.gs'
     'External\Office\Configuration.xml'

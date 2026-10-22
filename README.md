@@ -15,6 +15,7 @@ con Google Sheets cuando hay internet.
 | **Inventario** | 70 campos: equipo, CPU, RAM (módulos y slots), discos y SMART, batería (desgaste y ciclos), SO, licencias, red, TPM, Secure Boot, antivirus y software instalado. |
 | **Google Sheets** | Una pestaña nueva por visita (`2026-10-22 · Cliente`) en el libro maestro. |
 | **Office** | Instala Office 2024 con el ODT. Descarga el paquete de Microsoft durante la instalación. |
+| **Aplicaciones** | Catálogo de 75 programas con búsqueda y categorías; instala con winget (7-Zip, Chrome, PDF, utilidades, etc.). |
 | **Activación** | Windows y Office (módulo existente de la herramienta original). |
 | **Edición** | Cambio de Windows Home a Pro con la clave genérica de Microsoft. |
 | **Utilidades** | Punto de restauración, bloatware, plan de máximo rendimiento, reparar red, usuario administrador local, batería HTML, clave OEM del BIOS. |
@@ -33,6 +34,7 @@ instales a propósito (Office, aplicaciones).
 ├─ WigglesMini.ps1        ← interfaz (WPF embebido)
 ├─ WigglesCore.ps1        ← escaneo, CSV, cola y Excel
 ├─ config.json            ← cliente, técnico, webhook y token
+├─ apps.json              ← catálogo de aplicaciones (ids de winget)
 ├─ irm.ps1                ← arranque remoto (irm | iex)
 ├─ Publicar-GitHub.md     ← cómo publicarlo y usar dominio propio
 ├─ Sheets\
@@ -66,7 +68,7 @@ oportunidad, sin duplicarse.
 > El botón **Exportar Excel** genera un `.xlsx` real (con filtro y encabezado) desde el CSV del día.
 > **Abrir carpeta** lleva a `Data\`.
 >
-> ¿Sin pendrive? También puedes ejecutarlo con `irm | iex` (ver sección 9).
+> ¿Sin pendrive? También puedes ejecutarlo con `irm | iex` (ver sección 10).
 
 ---
 
@@ -148,7 +150,38 @@ y reinicio al finalizar.
 
 ---
 
-## 7. Utilidades portables
+## 7. Aplicaciones (winget)
+
+La pestaña **APLICACIONES** trae un catálogo de 75 programas agrupados por categoría:
+
+- Busca por nombre, descripción o id de winget.
+- Filtra por categoría (Navegadores, Oficina, Utilidades, Multimedia, etc.).
+- Las marcadas con **★** son recomendadas; **SELECCIONAR RECOMENDADAS** las marca todas.
+- **INSTALAR SELECCIONADAS** instala en silencio, una por una, y muestra cuáles fallaron.
+
+No se descargan instaladores de portales como FilePuma: winget usa el manifiesto
+oficial del fabricante y valida el hash. Si un programa no está en winget, no aparece
+en el catálogo, para no instalar paquetes de dudosa procedencia.
+
+El catálogo está en `apps.json`. Para agregar uno, usa el **Id** de winget:
+
+```json
+{ "Id": "MiPrograma.Id", "Nombre": "Mi Programa", "Categoria": "Utilidades", "Descripcion": "Que hace", "Recomendada": false }
+```
+
+Busca el Id con:
+
+```powershell
+winget search "nombre del programa"
+```
+
+Requiere conexión a internet. Si winget falla, usa **Reparar winget / App Installer**.
+El botón **APLICACIONES BASICAS** de la pestaña SOFTWARE sigue usando la lista corta de
+`config.json` (`AppsBasicas`).
+
+---
+
+## 8. Utilidades portables
 
 Copia los ejecutables en `External\Tools` (o en subcarpetas) y aparecerán en la pestaña
 **HERRAMIENTAS**. La búsqueda es por nombre, así que sirven tanto `CrystalDiskInfo.exe`
@@ -168,7 +201,7 @@ Si no encuentra ninguna, muestra `NO INSTALADA`.
 
 ---
 
-## 8. Problemas frecuentes
+## 9. Problemas frecuentes
 
 | Síntoma | Causa / solución |
 |---|---|
@@ -185,7 +218,7 @@ Los detalles de cada sesión quedan en `Data\Logs\Mini_<fecha>.log`.
 
 ---
 
-## 9. Modo remoto (sin pendrive)
+## 10. Modo remoto (sin pendrive)
 
 Pensado para cuando se olvida el pendrive. Jeric solo pega:
 
@@ -216,7 +249,7 @@ Requisitos y pasos completos (incluido dominio propio tipo `tudominio.com/irm`):
 
 ---
 
-## 10. Notas
+## 11. Notas
 
 - Windows 10/11, PowerShell 5.1 (incluido). No requiere módulos ni instalar nada.
 - No se envía información a ningún sitio salvo el webhook que configures.

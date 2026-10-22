@@ -14,7 +14,7 @@ El script descarga la herramienta a `%TEMP%\WigglesMini`, pide administrador y l
 
 1. En GitHub: **New repository**.
 2. Nombre: `wiggles-mini`.
-3. Visibilidad: **Public** (si es privado, `irm` no puede leerlo sin un proxy; ver punto 7).
+3. Visibilidad: **Public** (si es privado, `irm` no puede leerlo sin un proxy; ver punto 9).
 4. Marca **Add a README** si quieres, o créalo vacío.
 
 ## 2. Subir los archivos
