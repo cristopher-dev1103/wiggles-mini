@@ -19,7 +19,6 @@ con Google Sheets cuando hay internet.
 | **Activación** | Windows y Office (módulo existente de la herramienta original). |
 | **Edición** | Cambio de Windows Home a Pro con la clave genérica de Microsoft. |
 | **Utilidades** | Punto de restauración, bloatware, plan de máximo rendimiento, reparar red, usuario administrador local, batería HTML, clave OEM del BIOS. |
-| **Portables** | Detecta lo que pongas en `External\Tools` (CrystalDiskInfo, HWiNFO, 3DP Net, etc.). |
 
 Todo se ejecuta desde el pendrive. No escribe en el equipo del cliente salvo lo que
 instales a propósito (Office, aplicaciones).
@@ -40,8 +39,7 @@ instales a propósito (Office, aplicaciones).
 ├─ Sheets\
 │  └─ Code.gs             ← Apps Script + instalador del libro
 ├─ External\
-│  ├─ Office\             ← Setup.exe (ODT) + Configuration.xml
-│  └─ Tools\              ← opcional: portables que quieras usar
+│  └─ Office\             ← Setup.exe (ODT) + Configuration.xml
 └─ Data\                  ← se crea sola
    ├─ Inventario_<Cliente>_<fecha>.csv
    ├─ Inventario_<Cliente>_<fecha>.xlsx
@@ -68,7 +66,7 @@ oportunidad, sin duplicarse.
 > El botón **Exportar Excel** genera un `.xlsx` real (con filtro y encabezado) desde el CSV del día.
 > **Abrir carpeta** lleva a `Data\`.
 >
-> ¿Sin pendrive? También puedes ejecutarlo con `irm | iex` (ver sección 10).
+> ¿Sin pendrive? También puedes ejecutarlo con `irm | iex` (ver sección 9).
 
 ---
 
@@ -181,27 +179,7 @@ El botón **APLICACIONES BASICAS** de la pestaña SOFTWARE sigue usando la lista
 
 ---
 
-## 8. Utilidades portables
-
-Copia los ejecutables en `External\Tools` (o en subcarpetas) y aparecerán en la pestaña
-**HERRAMIENTAS**. La búsqueda es por nombre, así que sirven tanto `CrystalDiskInfo.exe`
-como `CrystalDiskInfoPortable.exe`:
-
-| Herramienta | Nombre que debe contener el archivo |
-|---|---|
-| 3DP Net | `3DP_Net*.exe` |
-| 3DP Chip | `3DP_Chip*.exe` |
-| CrystalDiskInfo | `CrystalDiskInfo*.exe` |
-| CrystalDiskMark | `CrystalDiskMark*.exe` |
-| HWiNFO | `HWiNFO*.exe` |
-| UninstallTool | `UninstallTool*.exe` |
-
-No se incluyen por peso y licencias. La herramienta solo lanza el `.exe`; no lo copia ni lo instala.
-Si no encuentra ninguna, muestra `NO INSTALADA`.
-
----
-
-## 9. Problemas frecuentes
+## 8. Problemas frecuentes
 
 | Síntoma | Causa / solución |
 |---|---|
@@ -218,7 +196,7 @@ Los detalles de cada sesión quedan en `Data\Logs\Mini_<fecha>.log`.
 
 ---
 
-## 10. Modo remoto (sin pendrive)
+## 9. Modo remoto (sin pendrive)
 
 Pensado para cuando se olvida el pendrive. Jeric solo pega:
 
@@ -249,7 +227,7 @@ Requisitos y pasos completos (incluido dominio propio tipo `tudominio.com/irm`):
 
 ---
 
-## 11. Notas
+## 10. Notas
 
 - Windows 10/11, PowerShell 5.1 (incluido). No requiere módulos ni instalar nada.
 - No se envía información a ningún sitio salvo el webhook que configures.

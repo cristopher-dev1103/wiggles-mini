@@ -1,5 +1,5 @@
 ﻿# =============================================================================
-#  WIGGLES MINI  v1.1
+#  WIGGLES MINI  v1.2
 #  Inventario de equipos + utilidades para visitas a clientes.
 #  Un solo archivo, sin dependencias, 100% portable.
 # =============================================================================
@@ -9,7 +9,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $script:AppNombre  = 'WIGGLES MINI'
-$script:AppVersion = '1.1.0'
+$script:AppVersion = '1.2.0'
 
 # --- Ruta raiz (funciona desde USB, carpeta local o red) ---
 $script:Root = $PSScriptRoot
@@ -23,7 +23,6 @@ $script:CorePath   = Join-Path $script:Root 'WigglesCore.ps1'
 $script:DataDir    = Join-Path $script:Root 'Data'
 $script:LogDir     = Join-Path $script:DataDir 'Logs'
 $script:QueueDir   = Join-Path $script:DataDir 'Pendientes'
-$script:ToolsDir   = Join-Path $script:Root 'External\Tools'
 $script:OfficeDir  = Join-Path $script:Root 'External\Office'
 
 foreach ($d in @($script:DataDir, $script:LogDir, $script:QueueDir)) {
@@ -758,17 +757,6 @@ $Xaml = @'
         </Grid>
       </TabItem>
 
-      <!-- ===== HERRAMIENTAS ===== -->
-      <TabItem Header="HERRAMIENTAS">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-          <StackPanel Margin="14,14,14,10">
-            <TextBlock Text="HERRAMIENTAS PORTABLES" Style="{StaticResource Titulo}"/>
-            <TextBlock Name="txtToolsInfo" Text="" Foreground="{StaticResource Tenue}" FontSize="11"
-                       Margin="0,-4,0,12" TextWrapping="Wrap"/>
-            <WrapPanel Name="pnlTools"/>
-          </StackPanel>
-        </ScrollViewer>
-      </TabItem>
     </TabControl>
 
     <!-- ================= PIE ================= -->
@@ -1839,87 +1827,6 @@ function Start-RepararWinget {
 }
 
 # =============================================================================
-#  HERRAMIENTAS PORTABLES
-# =============================================================================
-$script:Tools = @(
-    @{ Nombre = '3DP Net';          Archivo = '3DP_Net*.exe';           Desc = 'Drivers de red offline (equipos sin internet)' }
-    @{ Nombre = '3DP Chip';         Archivo = '3DP_Chip*.exe';          Desc = 'Detecta y descarga drivers del equipo' }
-    @{ Nombre = 'CrystalDiskInfo';  Archivo = 'CrystalDiskInfo*.exe';   Desc = 'Salud SMART del disco' }
-    @{ Nombre = 'CrystalDiskMark';  Archivo = 'CrystalDiskMark*.exe';   Desc = 'Velocidad del disco' }
-    @{ Nombre = 'HWiNFO';           Archivo = 'HWiNFO*.exe';            Desc = 'Sensores y temperatura' }
-    @{ Nombre = 'UninstallTool';    Archivo = 'UninstallTool*.exe';     Desc = 'Desinstalacion limpia' }
-)
-
-function Construir-PanelTools {
-    $pnlTools.Children.Clear()
-    $encontradas = 0
-
-    foreach ($t in $script:Tools) {
-        $ruta = $null
-        if (Test-Path $script:ToolsDir) {
-            try {
-                $ruta = Get-ChildItem -Path $script:ToolsDir -Filter $t.Archivo -Recurse -File -ErrorAction Ignore |
-                    Sort-Object Length -Descending | Select-Object -First 1
-            } catch {}
-        }
-
-        $card = New-Object System.Windows.Controls.Border
-        $card.Style = $Window.FindResource('Tarjeta')
-        $card.Width = 300
-        $card.Height = 118
-
-        $sp = New-Object System.Windows.Controls.StackPanel
-        $titulo = New-Object System.Windows.Controls.TextBlock
-        $titulo.Text = $t.Nombre
-        $titulo.FontWeight = 'SemiBold'
-        $titulo.FontSize = 13
-        $titulo.Foreground = '#E6EDF3'
-        $sp.Children.Add($titulo) | Out-Null
-
-        $desc = New-Object System.Windows.Controls.TextBlock
-        $desc.Text = $t.Desc
-        $desc.FontSize = 10.5
-        $desc.Foreground = '#8494A6'
-        $desc.TextWrapping = 'Wrap'
-        $desc.Margin = '0,2,0,8'
-        $sp.Children.Add($desc) | Out-Null
-
-        $btn = New-Object System.Windows.Controls.Button
-        if ($ruta) {
-            $btn.Content = 'ABRIR'
-            $btn.Style = $Window.FindResource('BotonVerde')
-            $btn.Height = 30
-            $btn.Tag = $ruta.FullName
-            $btn.Add_Click({
-                param($s, $e)
-                $exe = $s.Tag
-                Write-Log "Abriendo herramienta: $exe"
-                try { Start-Process -FilePath $exe -WorkingDirectory (Split-Path $exe -Parent) } catch {
-                    Show-Mensaje "No se pudo abrir: $exe" 'Herramienta' 'Warning'
-                }
-            })
-            $encontradas++
-        } else {
-            $btn.Content = 'NO INSTALADA'
-            $btn.IsEnabled = $false
-            $btn.Height = 30
-            $btn.Tag = $t.Archivo
-            $btn.ToolTip = "Coloca el archivo en External\Tools\$($t.Archivo)"
-        }
-        $sp.Children.Add($btn) | Out-Null
-
-        $card.Child = $sp
-        $pnlTools.Children.Add($card) | Out-Null
-    }
-
-    $txtToolsInfo.Text = if ($encontradas -eq 0) {
-        "No hay herramientas en External\Tools. Copia ahi las utilidades portables (CrystalDiskInfo, HWiNFO, 3DP Net, UninstallTool)."
-    } else {
-        "$encontradas de $($script:Tools.Count) herramientas disponibles en el pendrive."
-    }
-}
-
-# =============================================================================
 #  EXPORTAR
 # =============================================================================
 function Start-ExportarExcel {
@@ -2020,7 +1927,6 @@ $Window.Add_Loaded({
 
     Actualizar-EstadoOffice
     Inicializar-CatalogoApps
-    Construir-PanelTools
     Update-Contadores
 
     # Estado de licencias en segundo plano

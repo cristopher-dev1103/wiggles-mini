@@ -26,11 +26,11 @@ irm.ps1
 WigglesMini.ps1
 WigglesCore.ps1
 config.json
+apps.json
 README.md
 Sheets/Code.gs
 External/Office/Setup.exe
 External/Office/Configuration.xml
-External/Tools/LEEME.txt
 ```
 
 Opciones:

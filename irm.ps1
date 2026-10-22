@@ -31,7 +31,6 @@ $Archivos = @(
     'Sheets\Code.gs'
     'External\Office\Configuration.xml'
     'External\Office\Setup.exe'
-    'External\Tools\LEEME.txt'
 )
 
 # ---------------------------------------------------------------------------
