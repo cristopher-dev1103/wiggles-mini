@@ -1,0 +1,812 @@
+﻿{
+    "version":  1,
+    "tweaks":  [
+                   {
+                       "Id":  "Telemetry",
+                       "Nombre":  "Telemetria y publicidad",
+                       "Descripcion":  "Desactiva telemetria, publicidad personalizada y servicios de diagnostico.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+                                            "Name":  "Enabled",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+                                            "Name":  "TailoredExperiencesWithDiagnosticDataEnabled",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy",
+                                            "Name":  "HasAccepted",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Input\\TIPC",
+                                            "Name":  "Enabled",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\InputPersonalization",
+                                            "Name":  "RestrictImplicitInkCollection",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\InputPersonalization",
+                                            "Name":  "RestrictImplicitTextCollection",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\InputPersonalization\\TrainedDataStore",
+                                            "Name":  "HarvestContacts",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Personalization\\Settings",
+                                            "Name":  "AcceptedPrivacyPolicy",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+                                            "Name":  "AllowTelemetry",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                                            "Name":  "Start_TrackProgs",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                                            "Name":  "PublishUserActivities",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Siuf\\Rules",
+                                            "Name":  "NumberOfSIUFInPeriod",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Siuf\\Rules",
+                                            "Name":  "PeriodInNanoSeconds",
+                                            "Value":  "\u003cRemoveEntry\u003e",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ],
+                       "service":  [
+                                       {
+                                           "Name":  "diagtrack",
+                                           "StartupType":  "Disabled",
+                                           "OriginalType":  "Automatic"
+                                       },
+                                       {
+                                           "Name":  "WerSvc",
+                                           "StartupType":  "Disabled",
+                                           "OriginalType":  "Manual"
+                                       }
+                                   ],
+                       "InvokeScript":  [
+                                            "\r\n      # Disable Defender Auto Sample Submission\r\n      Set-MpPreference -SubmitSamplesConsent 2 -ErrorAction SilentlyContinue\r\n\r\n      # Disable PowerShell 7 telemetry\r\n      [Environment]::SetEnvironmentVariable(\u0027POWERSHELL_TELEMETRY_OPTOUT\u0027, \u00271\u0027, \u0027Machine\u0027)\r\n      "
+                                        ],
+                       "UndoScript":  [
+                                          "\r\n      # Enable Defender Auto Sample Submission\r\n      Set-MpPreference -SubmitSamplesConsent 1 -ErrorAction SilentlyContinue\r\n\r\n      # Enable PowerShell 7 telemetry\r\n      [Environment]::SetEnvironmentVariable(\u0027POWERSHELL_TELEMETRY_OPTOUT\u0027, \u0027\u0027, \u0027Machine\u0027)\r\n      "
+                                      ]
+                   },
+                   {
+                       "Id":  "Activity",
+                       "Nombre":  "Historial de actividad",
+                       "Descripcion":  "Evita que Windows publique o suba el historial de actividades.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                                            "Name":  "EnableActivityFeed",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                                            "Name":  "PublishUserActivities",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                                            "Name":  "UploadUserActivities",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "ConsumerFeatures",
+                       "Nombre":  "Sugerencias y apps promocionadas",
+                       "Descripcion":  "Bloquea instalaciones y sugerencias automaticas de la Store.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+                                            "Name":  "DisableWindowsConsumerFeatures",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "DeliveryOptimization",
+                       "Nombre":  "Optimizacion de entrega",
+                       "Descripcion":  "Evita compartir actualizaciones con otros equipos por internet.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+                                            "Name":  "DODownloadMode",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "Location",
+                       "Nombre":  "Ubicacion",
+                       "Descripcion":  "Desactiva el seguimiento de ubicacion y el servicio lfsvc.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location",
+                                            "Name":  "Value",
+                                            "Value":  "Deny",
+                                            "Type":  "String",
+                                            "OriginalValue":  "Allow"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Sensor\\Overrides\\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}",
+                                            "Name":  "SensorPermissionState",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SYSTEM\\Maps",
+                                            "Name":  "AutoUpdateEnabled",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        }
+                                    ],
+                       "service":  [
+                                       {
+                                           "Name":  "lfsvc",
+                                           "StartupType":  "Disabled",
+                                           "OriginalType":  "Manual"
+                                       }
+                                   ]
+                   },
+                   {
+                       "Id":  "DeviceMetadata",
+                       "Nombre":  "Apps de dispositivos",
+                       "Descripcion":  "Evita que se instalen apps al conectar monitores o dispositivos.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Device Metadata",
+                                            "Name":  "PreventDeviceMetadataFromNetwork",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "StoreSearch",
+                       "Nombre":  "Sugerencias de la Store",
+                       "Descripcion":  "Oculta apps recomendadas en la Store. Puede afectar la busqueda de la Store; se puede deshacer.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Avanzado",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "InvokeScript":  [
+                                            "icacls \"$Env:LocalAppData\\Packages\\Microsoft.WindowsStore_8wekyb3d8bbwe\\LocalState\\store.db\" /deny *S-1-1-0:F"
+                                        ],
+                       "UndoScript":  [
+                                          "icacls \"$Env:LocalAppData\\Packages\\Microsoft.WindowsStore_8wekyb3d8bbwe\\LocalState\\store.db\" /grant *S-1-1-0:F"
+                                      ]
+                   },
+                   {
+                       "Id":  "BGapps",
+                       "Nombre":  "Apps en segundo plano",
+                       "Descripcion":  "Impide que las apps de la Store se ejecuten en segundo plano.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Avanzado",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications",
+                                            "Name":  "GlobalUserDisabled",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "Widget",
+                       "Nombre":  "Widgets",
+                       "Descripcion":  "Elimina el panel de widgets de la barra de tareas. No se puede reinstalar desde aqui.",
+                       "Categoria":  "Privacidad",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  true,
+                       "InvokeScript":  [
+                                            "Get-Process *Widget* -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue\r\nGet-AppxPackage Microsoft.WidgetsPlatformRuntime -AllUsers -ErrorAction SilentlyContinue | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue\r\nGet-AppxPackage MicrosoftWindows.Client.WebExperience -AllUsers -ErrorAction SilentlyContinue | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue\r\nStop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }"
+                                        ]
+                   },
+                   {
+                       "Id":  "EndTask",
+                       "Nombre":  "Finalizar tarea con clic derecho",
+                       "Descripcion":  "Anade Finalizar tarea al menu de la barra de tareas.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings",
+                                            "Name":  "TaskbarEndTask",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "DarkMode",
+                       "Nombre":  "Tema oscuro",
+                       "Descripcion":  "Activa el tema oscuro en Windows y aplicaciones.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+                                            "Name":  "AppsUseLightTheme",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+                                            "Name":  "SystemUsesLightTheme",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        }
+                                    ],
+                       "InvokeScript":  [
+                                            "Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }"
+                                        ],
+                       "UndoScript":  [
+                                          "Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }"
+                                      ]
+                   },
+                   {
+                       "Id":  "ShowExt",
+                       "Nombre":  "Extensiones de archivo",
+                       "Descripcion":  "Muestra las extensiones (.exe, .pdf, etc.).",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                                            "Name":  "HideFileExt",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        }
+                                    ],
+                       "InvokeScript":  [
+                                            "\r\n      Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }\r\n      "
+                                        ],
+                       "UndoScript":  [
+                                          "\r\n      Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }\r\n      "
+                                      ]
+                   },
+                   {
+                       "Id":  "HiddenFiles",
+                       "Nombre":  "Archivos ocultos",
+                       "Descripcion":  "Muestra archivos y carpetas ocultos.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                                            "Name":  "Hidden",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ],
+                       "InvokeScript":  [
+                                            "\r\n      Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }\r\n      "
+                                        ],
+                       "UndoScript":  [
+                                          "\r\n      Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }\r\n      "
+                                      ]
+                   },
+                   {
+                       "Id":  "NumLock",
+                       "Nombre":  "NumLock al iniciar",
+                       "Descripcion":  "Activa NumLock al encender el equipo.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKU:\\.Default\\Control Panel\\Keyboard",
+                                            "Name":  "InitialKeyboardIndicators",
+                                            "Value":  "2",
+                                            "Type":  "String",
+                                            "OriginalValue":  "0"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Control Panel\\Keyboard",
+                                            "Name":  "InitialKeyboardIndicators",
+                                            "Value":  "2",
+                                            "Type":  "String",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "MouseAcceleration",
+                       "Nombre":  "Aceleracion del raton",
+                       "Descripcion":  "Activa la aceleracion del puntero.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Control Panel\\Mouse",
+                                            "Name":  "MouseSpeed",
+                                            "Value":  "1",
+                                            "Type":  "String",
+                                            "OriginalValue":  "0"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Control Panel\\Mouse",
+                                            "Name":  "MouseThreshold1",
+                                            "Value":  "6",
+                                            "Type":  "String",
+                                            "OriginalValue":  "0"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Control Panel\\Mouse",
+                                            "Name":  "MouseThreshold2",
+                                            "Value":  "10",
+                                            "Type":  "String",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "WindowSnapping",
+                       "Nombre":  "Ajuste de ventanas",
+                       "Descripcion":  "Activa el ajuste automatico al arrastrar ventanas.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Control Panel\\Desktop",
+                                            "Name":  "WindowArrangementActive",
+                                            "Value":  "1",
+                                            "Type":  "String",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "Scrollbars",
+                       "Nombre":  "Barras de desplazamiento visibles",
+                       "Descripcion":  "Mantiene las barras siempre visibles.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Control Panel\\Accessibility",
+                                            "Name":  "DynamicScrollbars",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "BatteryPercentage",
+                       "Nombre":  "Porcentaje de bateria",
+                       "Descripcion":  "Muestra el porcentaje junto al icono de bateria.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                                            "Name":  "IsBatteryPercentageEnabled",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "DetailedBSoD",
+                       "Nombre":  "Pantalla azul detallada",
+                       "Descripcion":  "Muestra mas informacion en caso de fallo.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\CrashControl",
+                                            "Name":  "DisplayParameters",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\CrashControl",
+                                            "Name":  "DisableEmoticon",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "BingSearch",
+                       "Nombre":  "Busqueda web de Bing",
+                       "Descripcion":  "Activa los resultados web de Bing en Inicio.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Search",
+                                            "Name":  "BingSearchEnabled",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "TaskbarSearch",
+                       "Nombre":  "Buscador en la barra",
+                       "Descripcion":  "Muestra el boton de busqueda en la barra de tareas.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Search",
+                                            "Name":  "SearchboxTaskbarMode",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "TaskView",
+                       "Nombre":  "Vista de tareas",
+                       "Descripcion":  "Muestra el boton Vista de tareas.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                                            "Name":  "ShowTaskViewButton",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "GameMode",
+                       "Nombre":  "Modo juego",
+                       "Descripcion":  "Activa el modo juego de Windows.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\GameBar",
+                                            "Name":  "AllowAutoGameMode",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\GameBar",
+                                            "Name":  "AutoGameModeEnabled",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "LongPaths",
+                       "Nombre":  "Rutas largas",
+                       "Descripcion":  "Permite rutas de mas de 260 caracteres.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+                                            "Name":  "LongPathsEnabled",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "0"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "SettingsHome",
+                       "Nombre":  "Inicio de Configuracion",
+                       "Descripcion":  "Muestra la pagina de inicio de Configuracion.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+                                            "Name":  "SettingsPageVisibility",
+                                            "Value":  "show:home",
+                                            "Type":  "String",
+                                            "OriginalValue":  "hide:home"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "StartRecommendations",
+                       "Nombre":  "Recomendaciones en Inicio",
+                       "Descripcion":  "Muestra la seccion de recomendaciones del menu Inicio.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Start",
+                                            "Name":  "HideRecommendedSection",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Education",
+                                            "Name":  "IsEducationEnvironment",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer",
+                                            "Name":  "HideRecommendedSection",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        }
+                                    ],
+                       "InvokeScript":  [
+                                            "\r\n      Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }\r\n      "
+                                        ],
+                       "UndoScript":  [
+                                          "\r\n      Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }\r\n      "
+                                      ]
+                   },
+                   {
+                       "Id":  "LockScreen",
+                       "Nombre":  "Pantalla de bloqueo",
+                       "Descripcion":  "Omite la pantalla de bloqueo al iniciar.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization",
+                                            "Name":  "NoLockScreen",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "Notifications",
+                       "Nombre":  "Notificaciones y calendario",
+                       "Descripcion":  "Desactiva las notificaciones del sistema.",
+                       "Categoria":  "Interfaz",
+                       "Riesgo":  "Avanzado",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKCU:\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+                                            "Name":  "DisableNotificationCenter",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        },
+                                        {
+                                            "Path":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
+                                            "Name":  "ToastEnabled",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "Hiber",
+                       "Nombre":  "Hibernacion",
+                       "Descripcion":  "Desactiva la hibernacion y libera espacio en disco.",
+                       "Categoria":  "Sistema",
+                       "Riesgo":  "Seguro",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\System\\CurrentControlSet\\Control\\Session Manager\\Power",
+                                            "Name":  "HibernateEnabled",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        },
+                                        {
+                                            "Path":  "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FlyoutMenuSettings",
+                                            "Name":  "ShowHibernateOption",
+                                            "Value":  "0",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "1"
+                                        }
+                                    ],
+                       "InvokeScript":  [
+                                            "powercfg.exe /hibernate off"
+                                        ],
+                       "UndoScript":  [
+                                          "powercfg.exe /hibernate on"
+                                      ]
+                   },
+                   {
+                       "Id":  "WPBT",
+                       "Nombre":  "Ejecucion WPBT",
+                       "Descripcion":  "Bloquea programas que el fabricante ejecuta al arrancar.",
+                       "Categoria":  "Sistema",
+                       "Riesgo":  "Avanzado",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "registry":  [
+                                        {
+                                            "Path":  "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager",
+                                            "Name":  "DisableWpbtExecution",
+                                            "Value":  "1",
+                                            "Type":  "DWord",
+                                            "OriginalValue":  "\u003cRemoveEntry\u003e"
+                                        }
+                                    ]
+                   },
+                   {
+                       "Id":  "ExplorerAutoDiscovery",
+                       "Nombre":  "Deteccion automatica de carpetas",
+                       "Descripcion":  "Desactiva la deteccion de tipo de carpeta en Explorer.",
+                       "Categoria":  "Sistema",
+                       "Riesgo":  "Avanzado",
+                       "Accion":  false,
+                       "SinDeshacer":  false,
+                       "InvokeScript":  [
+                                            "Remove-Item -Path \u0027HKCU:\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\u0027 -Recurse -Force -ErrorAction SilentlyContinue\r\nRemove-Item -Path \u0027HKCU:\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\BagMRU\u0027 -Recurse -Force -ErrorAction SilentlyContinue\r\nif (-not (Test-Path \u0027HKCU:\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\\AllFolders\\Shell\u0027)) { New-Item -Path \u0027HKCU:\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\\AllFolders\\Shell\u0027 -Force | Out-Null }\r\nNew-ItemProperty -Path \u0027HKCU:\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\\AllFolders\\Shell\u0027 -Name FolderType -Value NotSpecified -PropertyType String -Force | Out-Null\r\nStop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }"
+                                        ],
+                       "UndoScript":  [
+                                          "Remove-Item -Path \u0027HKCU:\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\u0027 -Recurse -Force -ErrorAction SilentlyContinue\r\nRemove-Item -Path \u0027HKCU:\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\BagMRU\u0027 -Recurse -Force -ErrorAction SilentlyContinue\r\nStop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 900; if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) { Start-Process explorer.exe }"
+                                      ]
+                   },
+                   {
+                       "Id":  "DiskCleanup",
+                       "Nombre":  "Limpieza de componentes",
+                       "Descripcion":  "Ejecuta DISM y elimina temporales. Puede tardar varios minutos.",
+                       "Categoria":  "Mantenimiento",
+                       "Riesgo":  "Seguro",
+                       "Accion":  true,
+                       "SinDeshacer":  false,
+                       "InvokeScript":  [
+                                            "Dism.exe /Online /Cleanup-Image /StartComponentCleanup | Out-Null\r\nRemove-Item -Path \"$env:TEMP\\*\" -Recurse -Force -ErrorAction SilentlyContinue\r\nRemove-Item -Path \"$env:SystemRoot\\Temp\\*\" -Recurse -Force -ErrorAction SilentlyContinue"
+                                        ]
+                   },
+                   {
+                       "Id":  "DeleteTempFiles",
+                       "Nombre":  "Archivos temporales",
+                       "Descripcion":  "Elimina temporales del usuario y del sistema.",
+                       "Categoria":  "Mantenimiento",
+                       "Riesgo":  "Seguro",
+                       "Accion":  true,
+                       "SinDeshacer":  false,
+                       "InvokeScript":  [
+                                            "Remove-Item -Path \"$env:TEMP\\*\" -Recurse -Force -ErrorAction SilentlyContinue\r\nRemove-Item -Path \"$env:SystemRoot\\Temp\\*\" -Recurse -Force -ErrorAction SilentlyContinue"
+                                        ]
+                   }
+               ]
+}

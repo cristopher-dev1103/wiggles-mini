@@ -33,6 +33,30 @@ IF NOT EXIST "WigglesCore.ps1" (
     EXIT /B 1
 )
 
+IF NOT EXIST "apps.json" (
+    color 0C
+    echo ERROR: No se encuentra apps.json
+    echo Copia todos los archivos en la misma carpeta.
+    pause
+    EXIT /B 1
+)
+
+IF NOT EXIST "appx.json" (
+    color 0C
+    echo ERROR: No se encuentra appx.json
+    echo Copia todos los archivos en la misma carpeta.
+    pause
+    EXIT /B 1
+)
+
+IF NOT EXIST "tweaks.json" (
+    color 0C
+    echo ERROR: No se encuentra tweaks.json
+    echo Copia todos los archivos en la misma carpeta.
+    pause
+    EXIT /B 1
+)
+
 powershell -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "WigglesMini.ps1"
 
 EXIT /B %ERRORLEVEL%

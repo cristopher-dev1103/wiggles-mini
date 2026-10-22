@@ -1,12 +1,33 @@
-{
+﻿{
     "version":  1,
     "apps":  [
                  {
-                     "Id":  "Brave.Brave",
-                     "Nombre":  "Brave",
-                     "Categoria":  "Navegadores",
-                     "Descripcion":  "Navegador con bloqueo de anuncios",
-                     "Recomendada":  false
+                     "Id":  "Git.Git",
+                     "Nombre":  "Git",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Control de versiones",
+                     "Recomendada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.VisualStudioCode",
+                     "Nombre":  "Visual Studio Code",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Editor de codigo",
+                     "Recomendada":  true
+                 },
+                 {
+                     "Id":  "CrystalDewWorld.CrystalDiskInfo",
+                     "Nombre":  "CrystalDiskInfo",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Salud de discos",
+                     "Recomendada":  true
+                 },
+                 {
+                     "Id":  "VideoLAN.VLC",
+                     "Nombre":  "VLC",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Reproductor universal",
+                     "Recomendada":  true
                  },
                  {
                      "Id":  "Google.Chrome",
@@ -16,32 +37,11 @@
                      "Recomendada":  true
                  },
                  {
-                     "Id":  "LibreWolf.LibreWolf",
-                     "Nombre":  "LibreWolf",
-                     "Categoria":  "Navegadores",
-                     "Descripcion":  "Firefox enfocado en privacidad",
-                     "Recomendada":  false
-                 },
-                 {
                      "Id":  "Mozilla.Firefox",
                      "Nombre":  "Mozilla Firefox",
                      "Categoria":  "Navegadores",
                      "Descripcion":  "Navegador alternativo",
                      "Recomendada":  true
-                 },
-                 {
-                     "Id":  "Opera.Opera",
-                     "Nombre":  "Opera",
-                     "Categoria":  "Navegadores",
-                     "Descripcion":  "Navegador con VPN integrada",
-                     "Recomendada":  false
-                 },
-                 {
-                     "Id":  "Vivaldi.Vivaldi",
-                     "Nombre":  "Vivaldi",
-                     "Categoria":  "Navegadores",
-                     "Descripcion":  "Navegador personalizable",
-                     "Recomendada":  false
                  },
                  {
                      "Id":  "Adobe.Acrobat.Reader.64-bit",
@@ -58,32 +58,18 @@
                      "Recomendada":  true
                  },
                  {
-                     "Id":  "ONLYOFFICE.DesktopEditors",
-                     "Nombre":  "ONLYOFFICE",
-                     "Categoria":  "Oficina",
-                     "Descripcion":  "Suite ofimatica",
-                     "Recomendada":  false
+                     "Id":  "AnyDesk.AnyDesk",
+                     "Nombre":  "AnyDesk",
+                     "Categoria":  "Remoto",
+                     "Descripcion":  "Escritorio remoto",
+                     "Recomendada":  true
                  },
                  {
-                     "Id":  "geeksoftwareGmbH.PDF24Creator",
-                     "Nombre":  "PDF24 Creator",
-                     "Categoria":  "Oficina",
-                     "Descripcion":  "Herramientas PDF",
-                     "Recomendada":  false
-                 },
-                 {
-                     "Id":  "SumatraPDF.SumatraPDF",
-                     "Nombre":  "SumatraPDF",
-                     "Categoria":  "Oficina",
-                     "Descripcion":  "Lector PDF ligero",
-                     "Recomendada":  false
-                 },
-                 {
-                     "Id":  "Mozilla.Thunderbird",
-                     "Nombre":  "Thunderbird",
-                     "Categoria":  "Oficina",
-                     "Descripcion":  "Cliente de correo",
-                     "Recomendada":  false
+                     "Id":  "Bitwarden.Bitwarden",
+                     "Nombre":  "Bitwarden",
+                     "Categoria":  "Seguridad",
+                     "Descripcion":  "Gestor de contrasenas",
+                     "Recomendada":  true
                  },
                  {
                      "Id":  "7zip.7zip",
@@ -93,25 +79,11 @@
                      "Recomendada":  true
                  },
                  {
-                     "Id":  "Balena.Etcher",
-                     "Nombre":  "balenaEtcher",
-                     "Categoria":  "Utilidades",
-                     "Descripcion":  "Grabar imagenes a USB",
-                     "Recomendada":  false
-                 },
-                 {
                      "Id":  "voidtools.Everything",
                      "Nombre":  "Everything",
                      "Categoria":  "Utilidades",
                      "Descripcion":  "Busqueda instantanea de archivos",
                      "Recomendada":  true
-                 },
-                 {
-                     "Id":  "Greenshot.Greenshot",
-                     "Nombre":  "Greenshot",
-                     "Categoria":  "Utilidades",
-                     "Descripcion":  "Capturas de pantalla",
-                     "Recomendada":  false
                  },
                  {
                      "Id":  "Notepad++.Notepad++",
@@ -135,46 +107,655 @@
                      "Recomendada":  true
                  },
                  {
-                     "Id":  "ShareX.ShareX",
-                     "Nombre":  "ShareX",
-                     "Categoria":  "Utilidades",
-                     "Descripcion":  "Capturas y grabacion",
+                     "Id":  "Jellyfin.JellyfinMediaPlayer",
+                     "Nombre":  "Jellyfin Media Player",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Ventoy.Ventoy",
-                     "Nombre":  "Ventoy",
-                     "Categoria":  "Utilidades",
-                     "Descripcion":  "USB multiboot",
+                     "Id":  "Jellyfin.Server",
+                     "Nombre":  "Jellyfin Server",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Audacity.Audacity",
-                     "Nombre":  "Audacity",
-                     "Categoria":  "Multimedia",
-                     "Descripcion":  "Editor de audio",
+                     "Id":  "XBMCFoundation.Kodi",
+                     "Nombre":  "Kodi Media Center",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "HandBrake.HandBrake",
-                     "Nombre":  "HandBrake",
-                     "Categoria":  "Multimedia",
-                     "Descripcion":  "Conversion de video",
+                     "Id":  "LocalSend.LocalSend",
+                     "Nombre":  "LocalSend",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "OBSProject.OBSStudio",
-                     "Nombre":  "OBS Studio",
-                     "Categoria":  "Multimedia",
-                     "Descripcion":  "Grabacion y streaming",
+                     "Id":  "MoonlightGameStreamingProject.Moonlight",
+                     "Nombre":  "Moonlight/GameStream Client",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "VideoLAN.VLC",
-                     "Nombre":  "VLC",
-                     "Categoria":  "Multimedia",
-                     "Descripcion":  "Reproductor universal",
-                     "Recomendada":  true
+                     "Id":  "Netbird.Netbird",
+                     "Nombre":  "NetBird",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Nextcloud.NextcloudDesktop",
+                     "Nombre":  "Nextcloud Desktop",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Plex.Plex",
+                     "Nombre":  "Plex Desktop",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Plex.PlexMediaServer",
+                     "Nombre":  "Plex Media Server",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "LizardByte.Sunshine",
+                     "Nombre":  "Sunshine/GameStream Server",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Syncthing.Syncthing",
+                     "Nombre":  "Syncthing (CLI / Web UI)",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GermanCoding.SyncTrayzor",
+                     "Nombre":  "SyncTrayzor",
+                     "Categoria":  "Autoalojado",
+                     "Descripcion":  "Aplicacion de medios o servicio autoalojado.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Betterbird.Betterbird",
+                     "Nombre":  "Betterbird",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "ChatterinoTeam.Chatterino",
+                     "Nombre":  "Chatterino",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Discord.Discord",
+                     "Nombre":  "Discord",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Chat y voz",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "SpikeHD.Dorion",
+                     "Nombre":  "Dorion",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Element.Element",
+                     "Nombre":  "Element",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Teams",
+                     "Nombre":  "Microsoft Teams",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Reuniones y chat",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Proton.ProtonMail",
+                     "Nombre":  "Proton Mail",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Tox.qTox",
+                     "Nombre":  "QTox",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "OpenWhisperSystems.Signal",
+                     "Nombre":  "Signal",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Mensajeria cifrada",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "SlackTechnologies.Slack",
+                     "Nombre":  "Slack",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Chat de equipos",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "TeamSpeakSystems.TeamSpeakClient",
+                     "Nombre":  "TeamSpeak 3",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "TeamSpeakSystems.TeamSpeakClient.Beta.6",
+                     "Nombre":  "TeamSpeak 6",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Telegram.TelegramDesktop",
+                     "Nombre":  "Telegram",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Mensajeria",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Vencord.Vesktop",
+                     "Nombre":  "Vesktop",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Rakuten.Viber",
+                     "Nombre":  "Viber",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "msstore:9NKSQGP7F2NH",
+                     "Nombre":  "WhatsApp Desktop",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Aplicacion de comunicacion y mensajeria.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Zoom.Zoom",
+                     "Nombre":  "Zoom",
+                     "Categoria":  "Comunicacion",
+                     "Descripcion":  "Videollamadas",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Amazon.Corretto.21.JDK",
+                     "Nombre":  "Amazon Corretto 21 (LTS)",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Amazon.Corretto.25.JDK",
+                     "Nombre":  "Amazon Corretto 25 (LTS)",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Amazon.Corretto.8.JDK",
+                     "Nombre":  "Amazon Corretto 8 (LTS)",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Bruno.Bruno",
+                     "Nombre":  "Bruno",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "msstore:9NT1R1C2HH7J",
+                     "Nombre":  "ChatGPT Desktop",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Anthropic.ClaudeCode",
+                     "Nombre":  "Claude Code",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Anthropic.Claude",
+                     "Nombre":  "Claude Desktop",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Kitware.CMake",
+                     "Nombre":  "CMake",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "OpenAI.Codex",
+                     "Nombre":  "Codex",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Anysphere.Cursor",
+                     "Nombre":  "Cursor",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "DBeaver.DBeaver.Community",
+                     "Nombre":  "DBeaver Community",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Cliente de bases de datos",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Docker.DockerDesktop",
+                     "Nombre":  "Docker Desktop",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Contenedores",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Schniz.fnm",
+                     "Nombre":  "Fast Node Manager",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GitExtensionsTeam.GitExtensions",
+                     "Nombre":  "Git Extensions",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GitHub.cli",
+                     "Nombre":  "GitHub CLI",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Cliente gh",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GitHub.GitHubDesktop",
+                     "Nombre":  "GitHub Desktop",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Cliente Git grafico",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GoLang.Go",
+                     "Nombre":  "Go",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Hugo.Hugo.Extended",
+                     "Nombre":  "Hugo",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "JetBrains.Toolbox",
+                     "Nombre":  "Jetbrains Toolbox",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "JesseDuffield.lazygit",
+                     "Nombre":  "Lazygit",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "rjpcomputing.luaforwindows",
+                     "Nombre":  "Lua",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Neovim.Neovim",
+                     "Nombre":  "Neovim",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "OpenJS.NodeJS.LTS",
+                     "Nombre":  "Node.js LTS",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Runtime JavaScript",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "OpenJS.NodeJS",
+                     "Nombre":  "NodeJS",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "JanDeDobbeleer.OhMyPosh",
+                     "Nombre":  "Oh My Posh (Prompt)",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "SST.opencode",
+                     "Nombre":  "OpenCode",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "pnpm.pnpm",
+                     "Nombre":  "pnpm",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Postman.Postman",
+                     "Nombre":  "Postman",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Pruebas de APIs",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.PowerShell",
+                     "Nombre":  "PowerShell 7",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Shell multiplataforma",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Python.Python.3.12",
+                     "Nombre":  "Python 3.12",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Lenguaje de programacion",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Python.Python.3.14",
+                     "Nombre":  "Python3",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "RubyInstallerTeam.Ruby.4.0",
+                     "Nombre":  "Ruby",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Rustlang.Rust.MSVC",
+                     "Nombre":  "Rust",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Starship.Starship",
+                     "Nombre":  "Starship (Shell Prompt)",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "SublimeHQ.SublimeText.4",
+                     "Nombre":  "Sublime Text",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "EclipseAdoptium.Temurin.21.JDK",
+                     "Nombre":  "Temurin JDK 21",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Java Development Kit",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Unity.UnityHub",
+                     "Nombre":  "Unity Game Engine",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "astral-sh.uv",
+                     "Nombre":  "uv",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Hashicorp.Vagrant",
+                     "Nombre":  "Vagrant",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.VisualStudio.2022.Community",
+                     "Nombre":  "Visual Studio 2022",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.VisualStudio.Community",
+                     "Nombre":  "Visual Studio 2026",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "VSCodium.VSCodium",
+                     "Nombre":  "VS Codium",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.WindowsTerminal",
+                     "Nombre":  "Windows Terminal",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Terminal moderna",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Yarn.Yarn",
+                     "Nombre":  "Yarn",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "ZedIndustries.Zed",
+                     "Nombre":  "Zed",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Herramienta de desarrollo.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Famatech.AdvancedIPScanner",
+                     "Nombre":  "Advanced IP Scanner",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "angryziber.AngryIPScanner",
+                     "Nombre":  "Angry IP Scanner",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Maxon.CinebenchR23",
+                     "Nombre":  "Cinebench R23",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "CPUID.CPU-Z",
+                     "Nombre":  "CPU-Z",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Informacion del procesador",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "CrystalDewWorld.CrystalDiskMark",
+                     "Nombre":  "CrystalDiskMark",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Velocidad de discos",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Wagnardsoft.DisplayDriverUninstaller",
+                     "Nombre":  "Display Driver Uninstaller",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "TechPowerUp.GPU-Z",
+                     "Nombre":  "GPU-Z",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Informacion de la GPU",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "gerardog.gsudo",
+                     "Nombre":  "gsudo",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "REALiX.HWiNFO",
+                     "Nombre":  "HWiNFO",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Sensores y hardware",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "CPUID.HWMonitor",
+                     "Nombre":  "HWMonitor",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "WerWolv.ImHex",
+                     "Nombre":  "ImHex",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Guru3D.Afterburner",
+                     "Nombre":  "MSI Afterburner",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "MullvadVPN.MullvadVPN",
+                     "Nombre":  "Mullvad VPN",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Insecure.Nmap",
+                     "Nombre":  "Nmap",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Escaneo de red",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "OpenVPNTechnologies.OpenVPNConnect",
+                     "Nombre":  "OpenVPN Connect",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Henry++.simplewall",
+                     "Nombre":  "Simplewall",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "WinsiderSS.SystemInformer",
+                     "Nombre":  "System Informer",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Herramienta de diagnostico, red o hardware.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "WiresharkFoundation.Wireshark",
+                     "Nombre":  "Wireshark",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Analisis de red",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "AntibodySoftware.WizTree",
+                     "Nombre":  "WizTree",
+                     "Categoria":  "Diagnostico",
+                     "Descripcion":  "Espacio en disco",
+                     "Recomendada":  false
                  },
                  {
                      "Id":  "BlenderFoundation.Blender",
@@ -219,95 +800,606 @@
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "DBeaver.DBeaver.Community",
-                     "Nombre":  "DBeaver Community",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Cliente de bases de datos",
+                     "Id":  "Microsoft.DotNet.DesktopRuntime.10",
+                     "Nombre":  ".NET Desktop Runtime 10",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Docker.DockerDesktop",
-                     "Nombre":  "Docker Desktop",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Contenedores",
+                     "Id":  "Microsoft.DotNet.DesktopRuntime.6",
+                     "Nombre":  ".NET Desktop Runtime 6",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Git.Git",
-                     "Nombre":  "Git",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Control de versiones",
-                     "Recomendada":  true
-                 },
-                 {
-                     "Id":  "GitHub.cli",
-                     "Nombre":  "GitHub CLI",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Cliente gh",
+                     "Id":  "Microsoft.DotNet.DesktopRuntime.8",
+                     "Nombre":  ".NET Desktop Runtime 8",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "GitHub.GitHubDesktop",
-                     "Nombre":  "GitHub Desktop",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Cliente Git grafico",
+                     "Id":  "Microsoft.DotNet.DesktopRuntime.9",
+                     "Nombre":  ".NET Desktop Runtime 9",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "OpenJS.NodeJS.LTS",
-                     "Nombre":  "Node.js LTS",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Runtime JavaScript",
+                     "Id":  "Microsoft.Sysinternals.Autoruns",
+                     "Nombre":  "Autoruns",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Postman.Postman",
-                     "Nombre":  "Postman",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Pruebas de APIs",
+                     "Id":  "CodingWondersSoftware.DISMTools.Stable",
+                     "Nombre":  "DISMTools",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Microsoft.PowerShell",
-                     "Nombre":  "PowerShell 7",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Shell multiplataforma",
+                     "Id":  "Nlitesoft.NTLite",
+                     "Nombre":  "NTLite",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Python.Python.3.12",
-                     "Nombre":  "Python 3.12",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Lenguaje de programacion",
+                     "Id":  "Microsoft.NuGet",
+                     "Nombre":  "NuGet",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "EclipseAdoptium.Temurin.21.JDK",
-                     "Nombre":  "Temurin JDK 21",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Java Development Kit",
+                     "Id":  "Microsoft.OneDrive",
+                     "Nombre":  "OneDrive",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Microsoft.VisualStudioCode",
-                     "Nombre":  "Visual Studio Code",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Editor de codigo",
-                     "Recomendada":  true
-                 },
-                 {
-                     "Id":  "Microsoft.WindowsTerminal",
-                     "Nombre":  "Windows Terminal",
-                     "Categoria":  "Desarrollo",
-                     "Descripcion":  "Terminal moderna",
+                     "Id":  "Microsoft.Sysinternals.ProcessExplorer",
+                     "Nombre":  "Process Explorer",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Bitwarden.Bitwarden",
-                     "Nombre":  "Bitwarden",
-                     "Categoria":  "Seguridad",
-                     "Descripcion":  "Gestor de contrasenas",
-                     "Recomendada":  true
+                     "Id":  "Microsoft.Sysinternals.ProcessMonitor",
+                     "Nombre":  "Process Monitor",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Sysinternals.PsTools",
+                     "Nombre":  "PsTools",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Sysinternals.RDCMan",
+                     "Nombre":  "RDCMan",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Sysinternals.TCPView",
+                     "Nombre":  "TCPView",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.VCRedist.2015+.x86",
+                     "Nombre":  "Visual C++ 2015-2022 32-bit",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.VCRedist.2015+.x64",
+                     "Nombre":  "Visual C++ 2015-2022 64-bit",
+                     "Categoria":  "Herramientas Microsoft",
+                     "Descripcion":  "Utilidad de Microsoft para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Blizzard.BattleNet",
+                     "Nombre":  "Battle.net",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Cemu.Cemu",
+                     "Nombre":  "Cemu",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Overwolf.CurseForge",
+                     "Nombre":  "CurseForge",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "ElectronicArts.EADesktop",
+                     "Nombre":  "EA App",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "ES-DE.EmulationStation-DE",
+                     "Nombre":  "EmulationStation Desktop Edition",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "EpicGames.EpicGamesLauncher",
+                     "Nombre":  "Epic Games Launcher",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Nvidia.GeForceNow",
+                     "Nombre":  "GeForce NOW",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GOG.Galaxy",
+                     "Nombre":  "GOG Galaxy",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "HeroicGamesLauncher.HeroicGamesLauncher",
+                     "Nombre":  "Heroic Games Launcher",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "ItchIo.Itch",
+                     "Nombre":  "Itch.io",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Modrinth.ModrinthApp",
+                     "Nombre":  "Modrinth App",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Playnite.Playnite",
+                     "Nombre":  "Playnite",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "PrismLauncher.PrismLauncher",
+                     "Nombre":  "Prism Launcher",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Roblox.Roblox",
+                     "Nombre":  "Roblox",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Valve.Steam",
+                     "Nombre":  "Steam",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Ubisoft.Connect",
+                     "Nombre":  "Ubisoft Connect",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "VirtualDesktop.Streamer",
+                     "Nombre":  "Virtual Desktop Streamer",
+                     "Categoria":  "Juegos",
+                     "Descripcion":  "Cliente o utilidad para juegos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "AIMP.AIMP",
+                     "Nombre":  "AIMP (Music Player)",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Audacity.Audacity",
+                     "Nombre":  "Audacity",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Editor de audio",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "File-New-Project.EarTrumpet",
+                     "Nombre":  "EarTrumpet (Audio)",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "AdrienAllard.FileConverter",
+                     "Nombre":  "File Converter",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "PeterPawlowski.foobar2000",
+                     "Nombre":  "foobar2000 (Music Player)",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GIMP.GIMP.3",
+                     "Nombre":  "GIMP (Image Editor)",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "HandBrake.HandBrake",
+                     "Nombre":  "HandBrake",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Conversion de video",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "DuongDieuPhap.ImageGlass",
+                     "Nombre":  "ImageGlass (Image Viewer)",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "IrfanSkiljan.IrfanView",
+                     "Nombre":  "IrfanView",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Apple.iTunes",
+                     "Nombre":  "iTunes",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "CodecGuide.K-LiteCodecPack.Standard",
+                     "Nombre":  "K-Lite Codec Standard",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "clsid2.mpc-hc",
+                     "Nombre":  "Media Player Classic - Home Cinema",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "mpc-qt.mpc-qt",
+                     "Nombre":  "mpc-qt",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "shinchiro.mpv",
+                     "Nombre":  "mpv",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "nomacs.nomacs",
+                     "Nombre":  "nomacs",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Aplicacion de audio, video o imagen.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "OBSProject.OBSStudio",
+                     "Nombre":  "OBS Studio",
+                     "Categoria":  "Multimedia",
+                     "Descripcion":  "Grabacion y streaming",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Brave.Brave",
+                     "Nombre":  "Brave",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador con bloqueo de anuncios",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Hibbiki.Chromium",
+                     "Nombre":  "Chromium",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Edge",
+                     "Nombre":  "Edge",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Mozilla.Firefox.ESR",
+                     "Nombre":  "Firefox ESR",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Ablaze.Floorp",
+                     "Nombre":  "Floorp",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "ImputNet.Helium",
+                     "Nombre":  "Helium",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "LibreWolf.LibreWolf",
+                     "Nombre":  "LibreWolf",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Firefox enfocado en privacidad",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "MullvadVPN.MullvadBrowser",
+                     "Nombre":  "Mullvad Browser",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Opera.Opera",
+                     "Nombre":  "Opera",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador con VPN integrada",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "TorProject.TorBrowser",
+                     "Nombre":  "Tor Browser",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "eloston.ungoogled-chromium",
+                     "Nombre":  "Ungoogled Chromium",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Vivaldi.Vivaldi",
+                     "Nombre":  "Vivaldi",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador personalizable",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Waterfox.Waterfox",
+                     "Nombre":  "Waterfox",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Zen-Team.Zen-Browser",
+                     "Nombre":  "Zen Browser",
+                     "Categoria":  "Navegadores",
+                     "Descripcion":  "Navegador web.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Dropbox.Dropbox",
+                     "Nombre":  "Dropbox",
+                     "Categoria":  "Nube",
+                     "Descripcion":  "Almacenamiento en la nube",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Google.GoogleDrive",
+                     "Nombre":  "Google Drive",
+                     "Categoria":  "Nube",
+                     "Descripcion":  "Almacenamiento en la nube",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Foxit.FoxitReader",
+                     "Nombre":  "Foxit PDF Reader",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Cyanfish.NAPS2",
+                     "Nombre":  "NAPS2 (Scanner)",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "KDE.Okular",
+                     "Nombre":  "Okular",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "ONLYOFFICE.DesktopEditors",
+                     "Nombre":  "ONLYOFFICE",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Suite ofimatica",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "geeksoftwareGmbH.PDF24Creator",
+                     "Nombre":  "PDF24 Creator",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Herramientas PDF",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "PDFgear.PDFgear",
+                     "Nombre":  "PDFgear",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "PDFsam.PDFsam",
+                     "Nombre":  "PDFsam Basic",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "TrackerSoftware.PDF-XChangeEditor",
+                     "Nombre":  "PDF-XChange Editor",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "pbek.QOwnNotes",
+                     "Nombre":  "QOwnNotes",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Automattic.Simplenote",
+                     "Nombre":  "Simplenote",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "SumatraPDF.SumatraPDF",
+                     "Nombre":  "SumatraPDF",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Lector PDF ligero",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Mozilla.Thunderbird",
+                     "Nombre":  "Thunderbird",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Cliente de correo",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Xournal++.Xournal++",
+                     "Nombre":  "Xournal++",
+                     "Categoria":  "Oficina",
+                     "Descripcion":  "Aplicacion de oficina y documentos.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "calibre.calibre",
+                     "Nombre":  "calibre",
+                     "Categoria":  "Productividad",
+                     "Descripcion":  "Gestion de ebooks",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Joplin.Joplin",
+                     "Nombre":  "Joplin",
+                     "Categoria":  "Productividad",
+                     "Descripcion":  "Notas",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Notion.Notion",
+                     "Nombre":  "Notion",
+                     "Categoria":  "Productividad",
+                     "Descripcion":  "Notas y proyectos",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Obsidian.Obsidian",
+                     "Nombre":  "Obsidian",
+                     "Categoria":  "Productividad",
+                     "Descripcion":  "Notas locales",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "DigitalScholar.Zotero",
+                     "Nombre":  "Zotero",
+                     "Categoria":  "Productividad",
+                     "Descripcion":  "Referencias bibliograficas",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "PuTTY.PuTTY",
+                     "Nombre":  "PuTTY",
+                     "Categoria":  "Remoto",
+                     "Descripcion":  "SSH y Telnet",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "TeamViewer.TeamViewer",
+                     "Nombre":  "TeamViewer",
+                     "Categoria":  "Remoto",
+                     "Descripcion":  "Escritorio remoto",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "WinSCP.WinSCP",
+                     "Nombre":  "WinSCP",
+                     "Categoria":  "Remoto",
+                     "Descripcion":  "SFTP y FTP",
+                     "Recomendada":  false
                  },
                  {
                      "Id":  "Cloudflare.Warp",
@@ -352,178 +1444,318 @@
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "AnyDesk.AnyDesk",
-                     "Nombre":  "AnyDesk",
-                     "Categoria":  "Remoto",
-                     "Descripcion":  "Escritorio remoto",
-                     "Recomendada":  true
-                 },
-                 {
-                     "Id":  "PuTTY.PuTTY",
-                     "Nombre":  "PuTTY",
-                     "Categoria":  "Remoto",
-                     "Descripcion":  "SSH y Telnet",
+                     "Id":  "AgileBits.1Password",
+                     "Nombre":  "1Password",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "TeamViewer.TeamViewer",
-                     "Nombre":  "TeamViewer",
-                     "Categoria":  "Remoto",
-                     "Descripcion":  "Escritorio remoto",
+                     "Id":  "amir1376.ABDownloadManager",
+                     "Nombre":  "AB Download Manager",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "WinSCP.WinSCP",
-                     "Nombre":  "WinSCP",
-                     "Categoria":  "Remoto",
-                     "Descripcion":  "SFTP y FTP",
+                     "Id":  "AutoHotkey.AutoHotkey",
+                     "Nombre":  "AutoHotkey",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "CPUID.CPU-Z",
-                     "Nombre":  "CPU-Z",
-                     "Categoria":  "Diagnostico",
-                     "Descripcion":  "Informacion del procesador",
+                     "Id":  "Balena.Etcher",
+                     "Nombre":  "balenaEtcher",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Grabar imagenes a USB",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "CrystalDewWorld.CrystalDiskInfo",
-                     "Nombre":  "CrystalDiskInfo",
-                     "Categoria":  "Diagnostico",
-                     "Descripcion":  "Salud de discos",
-                     "Recomendada":  true
-                 },
-                 {
-                     "Id":  "CrystalDewWorld.CrystalDiskMark",
-                     "Nombre":  "CrystalDiskMark",
-                     "Categoria":  "Diagnostico",
-                     "Descripcion":  "Velocidad de discos",
+                     "Id":  "Blur009.BlurAutoClicker",
+                     "Nombre":  "BlurAutoClicker",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "TechPowerUp.GPU-Z",
-                     "Nombre":  "GPU-Z",
-                     "Categoria":  "Diagnostico",
-                     "Descripcion":  "Informacion de la GPU",
+                     "Id":  "Klocman.BulkCrapUninstaller",
+                     "Nombre":  "Bulk Crap Uninstaller",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "REALiX.HWiNFO",
-                     "Nombre":  "HWiNFO",
-                     "Categoria":  "Diagnostico",
-                     "Descripcion":  "Sensores y hardware",
+                     "Id":  "Deskflow.Deskflow",
+                     "Nombre":  "Deskflow",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Insecure.Nmap",
-                     "Nombre":  "Nmap",
-                     "Categoria":  "Diagnostico",
-                     "Descripcion":  "Escaneo de red",
+                     "Id":  "ente-io.auth-desktop",
+                     "Nombre":  "Ente Auth",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "WiresharkFoundation.Wireshark",
-                     "Nombre":  "Wireshark",
-                     "Categoria":  "Diagnostico",
-                     "Descripcion":  "Analisis de red",
+                     "Id":  "flux.flux",
+                     "Nombre":  "F.lux",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "AntibodySoftware.WizTree",
-                     "Nombre":  "WizTree",
-                     "Categoria":  "Diagnostico",
-                     "Descripcion":  "Espacio en disco",
+                     "Id":  "FilesCommunity.Files",
+                     "Nombre":  "Files",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Dropbox.Dropbox",
-                     "Nombre":  "Dropbox",
-                     "Categoria":  "Nube",
-                     "Descripcion":  "Almacenamiento en la nube",
+                     "Id":  "glzr-io.glazewm",
+                     "Nombre":  "GlazeWM",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Google.GoogleDrive",
-                     "Nombre":  "Google Drive",
-                     "Categoria":  "Nube",
-                     "Descripcion":  "Almacenamiento en la nube",
+                     "Id":  "Greenshot.Greenshot",
+                     "Nombre":  "Greenshot",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Capturas de pantalla",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "calibre.calibre",
-                     "Nombre":  "calibre",
-                     "Categoria":  "Productividad",
-                     "Descripcion":  "Gestion de ebooks",
+                     "Id":  "MHNexus.HxD",
+                     "Nombre":  "HxD Hex Editor",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Joplin.Joplin",
-                     "Nombre":  "Joplin",
-                     "Categoria":  "Productividad",
-                     "Descripcion":  "Notas",
+                     "Id":  "Tonec.InternetDownloadManager",
+                     "Nombre":  "Internet Download Manager",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Notion.Notion",
-                     "Nombre":  "Notion",
-                     "Categoria":  "Productividad",
-                     "Descripcion":  "Notas y proyectos",
+                     "Id":  "sylikc.JPEGView",
+                     "Nombre":  "JPEG View",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Obsidian.Obsidian",
-                     "Nombre":  "Obsidian",
-                     "Categoria":  "Productividad",
-                     "Descripcion":  "Notas locales",
+                     "Id":  "MiniTool.PartitionWizard.Free",
+                     "Nombre":  "MiniTool Partition Wizard",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "DigitalScholar.Zotero",
-                     "Nombre":  "Zotero",
-                     "Categoria":  "Productividad",
-                     "Descripcion":  "Referencias bibliograficas",
+                     "Id":  "rcmaehl.MSEdgeRedirect",
+                     "Nombre":  "MSEdgeRedirect",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Discord.Discord",
-                     "Nombre":  "Discord",
-                     "Categoria":  "Comunicacion",
-                     "Descripcion":  "Chat y voz",
+                     "Id":  "M2Team.NanaZip",
+                     "Nombre":  "NanaZip",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Microsoft.Teams",
-                     "Nombre":  "Microsoft Teams",
-                     "Categoria":  "Comunicacion",
-                     "Descripcion":  "Reuniones y chat",
+                     "Id":  "Nilesoft.Shell",
+                     "Nombre":  "Nilesoft Shell",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "OpenWhisperSystems.Signal",
-                     "Nombre":  "Signal",
-                     "Categoria":  "Comunicacion",
-                     "Descripcion":  "Mensajeria cifrada",
+                     "Id":  "TechPowerUp.NVCleanstall",
+                     "Nombre":  "NVCleanstall",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "SlackTechnologies.Slack",
-                     "Nombre":  "Slack",
-                     "Categoria":  "Comunicacion",
-                     "Descripcion":  "Chat de equipos",
+                     "Id":  "xM4ddy.OFGB",
+                     "Nombre":  "OFGB (Oh Frick Go Back)",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Telegram.TelegramDesktop",
-                     "Nombre":  "Telegram",
-                     "Categoria":  "Comunicacion",
-                     "Descripcion":  "Mensajeria",
+                     "Id":  "OPAutoClicker.OPAutoClicker",
+                     "Nombre":  "OPAutoClicker",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  },
                  {
-                     "Id":  "Zoom.Zoom",
-                     "Nombre":  "Zoom",
-                     "Categoria":  "Comunicacion",
-                     "Descripcion":  "Videollamadas",
+                     "Id":  "OpenRGB.OpenRGB",
+                     "Nombre":  "OpenRGB",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Oracle.VirtualBox",
+                     "Nombre":  "Oracle VirtualBox",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Parsec.Parsec",
+                     "Nombre":  "Parsec",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Giorgiotani.Peazip",
+                     "Nombre":  "PeaZip",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Fleex255.PolicyPlus",
+                     "Nombre":  "Policy Plus",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "BitSum.ProcessLasso",
+                     "Nombre":  "Process Lasso",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Proton.ProtonAuthenticator",
+                     "Nombre":  "Proton Authenticator",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Proton.ProtonDrive",
+                     "Nombre":  "Proton Drive",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Proton.ProtonPass",
+                     "Nombre":  "Proton Pass",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "qBittorrent.qBittorrent",
+                     "Nombre":  "qBittorrent",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "RevoUninstaller.RevoUninstaller",
+                     "Nombre":  "Revo Uninstaller",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "ShareX.ShareX",
+                     "Nombre":  "ShareX",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Capturas y grabacion",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "WhirlwindFX.SignalRgb",
+                     "Nombre":  "SignalRGB",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GlennDelahoy.SnappyDriverInstallerOrigin",
+                     "Nombre":  "Snappy Driver Installer Origin",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "StartIsBack.StartAllBack",
+                     "Nombre":  "StartAllBack",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "GlavSoft.TightVNC",
+                     "Nombre":  "TightVNC",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Ghisler.TotalCommander",
+                     "Nombre":  "Total Commander",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "CharlesMilette.TranslucentTB",
+                     "Nombre":  "TranslucentTB",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "JAMSoftware.TreeSize.Free",
+                     "Nombre":  "TreeSize Free",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Devolutions.UniGetUI",
+                     "Nombre":  "UniGetUI",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "Ventoy.Ventoy",
+                     "Nombre":  "Ventoy",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "USB multiboot",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "RARLab.WinRAR",
+                     "Nombre":  "WinRAR",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
+                     "Recomendada":  false
+                 },
+                 {
+                     "Id":  "WiseCleaner.WiseProgramUninstaller",
+                     "Nombre":  "Wise Program Uninstaller (WiseCleaner)",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Utilidad para Windows.",
                      "Recomendada":  false
                  }
              ]

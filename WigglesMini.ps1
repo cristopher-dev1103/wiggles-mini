@@ -1,7 +1,7 @@
 ﻿# =============================================================================
-#  WIGGLES MINI  v1.2
+#  WIGGLES MINI  v1.3
 #  Inventario de equipos + utilidades para visitas a clientes.
-#  Un solo archivo, sin dependencias, 100% portable.
+#  Portable, sin dependencias: PS1 + catalogos JSON.
 # =============================================================================
 #Requires -Version 5.1
 
@@ -9,7 +9,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $script:AppNombre  = 'WIGGLES MINI'
-$script:AppVersion = '1.2.0'
+$script:AppVersion = '1.3.0'
 
 # --- Ruta raiz (funciona desde USB, carpeta local o red) ---
 $script:Root = $PSScriptRoot
@@ -19,13 +19,17 @@ if (-not $script:Root) {
 if (-not $script:Root) { $script:Root = (Get-Location).Path }
 $script:Root = $script:Root.TrimEnd('\')
 
+# Normalizar rutas temporales (algunos equipos usan nombres 8.3 y Remove-Item falla con ellos)
+try { if ($env:TEMP) { $env:TEMP = [System.IO.Path]::GetFullPath($env:TEMP) } } catch {}
+try { if ($env:TMP)  { $env:TMP  = [System.IO.Path]::GetFullPath($env:TMP) } } catch {}
+
 $script:CorePath   = Join-Path $script:Root 'WigglesCore.ps1'
 $script:DataDir    = Join-Path $script:Root 'Data'
 $script:LogDir     = Join-Path $script:DataDir 'Logs'
 $script:QueueDir   = Join-Path $script:DataDir 'Pendientes'
 $script:OfficeDir  = Join-Path $script:Root 'External\Office'
 
-foreach ($d in @($script:DataDir, $script:LogDir, $script:QueueDir)) {
+foreach ($d in @($script:DataDir, $script:LogDir, $script:QueueDir, (Join-Path $script:DataDir 'Ajustes'))) {
     if (-not (Test-Path $d)) { New-Item -Path $d -ItemType Directory -Force | Out-Null }
 }
 
@@ -126,6 +130,79 @@ if ($script:AppsCatalogo.Count -eq 0) {
             Seleccionada = $false
         }
     }
+}
+
+# --- Catalogo AppX (apps preinstaladas) ---
+$script:AppxPath = Join-Path $script:Root 'appx.json'
+$script:AppxCatalogo = @()
+$script:AppxInstaladas = @()
+$script:AppxChecks = @{}
+if (Test-Path $script:AppxPath) {
+    try {
+        $CatAppx = Get-Content -Path $script:AppxPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        foreach ($a in @($CatAppx.apps)) {
+            if (-not $a.Id) { continue }
+            $script:AppxCatalogo += [PSCustomObject]@{
+                Id            = [string]$a.Id
+                Nombre        = [string]$a.Nombre
+                Categoria     = if ($a.Categoria) { [string]$a.Categoria } else { 'Otras' }
+                Descripcion   = [string]$a.Descripcion
+                StoreId       = [string]$a.StoreId
+                Predeterminada = [bool]$a.Predeterminada
+                Seleccionada  = $false
+            }
+        }
+    } catch {
+        Write-Log "appx.json invalido: $($_.Exception.Message)" 'WARN'
+    }
+}
+
+# --- Catalogo de ajustes (tweaks) ---
+$script:TweaksPath = Join-Path $script:Root 'tweaks.json'
+$script:TweaksEstadoPath = Join-Path $script:DataDir 'Ajustes\estado.json'
+$script:TweaksCatalogo = @()
+$script:TweaksEstado = [PSCustomObject]@{}
+$script:TweakBotones = @{}
+$script:TweakEstados = @{}
+if (Test-Path $script:TweaksPath) {
+    try {
+        $CatTweaks = Get-Content -Path $script:TweaksPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        foreach ($t in @($CatTweaks.tweaks)) {
+            if (-not $t.Id) { continue }
+            $script:TweaksCatalogo += [PSCustomObject]@{
+                Id           = [string]$t.Id
+                Nombre       = [string]$t.Nombre
+                Descripcion  = [string]$t.Descripcion
+                Categoria    = if ($t.Categoria) { [string]$t.Categoria } else { 'Otros' }
+                Riesgo       = if ($t.Riesgo) { [string]$t.Riesgo } else { 'Seguro' }
+                Accion       = [bool]$t.Accion
+                SinDeshacer  = [bool]$t.SinDeshacer
+                Registro     = @($t.registry)
+                Servicios    = @($t.service)
+                Script       = @($t.InvokeScript)
+                UndoScript   = @($t.UndoScript)
+            }
+        }
+    } catch {
+        Write-Log "tweaks.json invalido: $($_.Exception.Message)" 'WARN'
+    }
+}
+
+function Load-TweaksEstado {
+    $script:TweaksEstado = [PSCustomObject]@{}
+    if (Test-Path $script:TweaksEstadoPath) {
+        try {
+            $leido = Get-Content -Path $script:TweaksEstadoPath -Raw -Encoding UTF8 | ConvertFrom-Json
+            if ($leido) { $script:TweaksEstado = $leido }
+        } catch {
+            Write-Log "Estado de ajustes invalido: $($_.Exception.Message)" 'WARN'
+        }
+    }
+}
+
+function Test-TweakAplicado {
+    param([string]$Id)
+    return ($script:TweaksEstado.PSObject.Properties.Name -contains $Id)
 }
 
 function Save-Config {
@@ -757,6 +834,126 @@ $Xaml = @'
         </Grid>
       </TabItem>
 
+      <!-- ===== AJUSTES ===== -->
+      <TabItem Header="AJUSTES">
+        <Grid Margin="14,14,14,10">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <StackPanel Grid.Row="0" Margin="0,0,0,8">
+            <TextBlock Text="AJUSTES DE WINDOWS" Style="{StaticResource Titulo}"/>
+            <TextBlock Text="Privacidad, interfaz y sistema. Cada ajuste guarda su valor original para poder deshacerlo."
+                       Foreground="{StaticResource Tenue}" FontSize="11" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <Border Grid.Row="1" Style="{StaticResource Tarjeta}" Padding="8" Margin="0,0,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+              <StackPanel Name="pnlTweaks"/>
+            </ScrollViewer>
+          </Border>
+
+          <Grid Grid.Row="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Name="txtTweaksEstado" Grid.Column="0" Foreground="{StaticResource Tenue}"
+                       FontSize="11" TextWrapping="Wrap" Text="Cargando ajustes..."/>
+            <Button Name="btnTweaksRecargar" Grid.Column="1" Content="ACTUALIZAR ESTADO"
+                    Height="30" Padding="10,0" Margin="0,0,0,0"/>
+          </Grid>
+        </Grid>
+      </TabItem>
+
+      <!-- ===== CONFIG ===== -->
+      <TabItem Header="CONFIG">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <StackPanel Margin="14,14,14,10">
+            <TextBlock Text="REPARACIONES" Style="{StaticResource Titulo}"/>
+            <Border Style="{StaticResource Tarjeta}">
+              <WrapPanel>
+                <Button Name="btnFixSFC" Content="SFC + DISM" Height="32" Padding="12,0" Margin="0,0,8,8"/>
+                <Button Name="btnFixWU" Content="Resetear Windows Update" Height="32" Padding="12,0" Margin="0,0,8,8"/>
+                <Button Name="btnFixRed" Content="Resetear red (winsock + IP)" Height="32" Padding="12,0" Margin="0,0,8,8"/>
+                <Button Name="btnFixNTP" Content="Hora NTP (pool.ntp.org)" Height="32" Padding="12,0" Margin="0,0,8,8"/>
+                <Button Name="btnFixTemp" Content="Limpiar temporales" Height="32" Padding="12,0" Margin="0,0,8,8"/>
+                <Button Name="btnFixDISM" Content="Limpiar componentes (DISM)" Height="32" Padding="12,0" Margin="0,0,8,8"/>
+                <Button Name="btnFixWinget" Content="Reparar winget" Height="32" Padding="12,0" Margin="0,0,8,8"/>
+                <Button Name="btnFixRestore" Content="Punto de restauracion" Height="32" Padding="12,0" Margin="0,0,8,8"/>
+              </WrapPanel>
+            </Border>
+
+            <TextBlock Text="CARACTERISTICAS DE WINDOWS" Style="{StaticResource Titulo}"/>
+            <Border Style="{StaticResource Tarjeta}">
+              <StackPanel>
+                <WrapPanel Name="pnlFeatures"/>
+                <Button Name="btnInstalarFeatures" Content="INSTALAR SELECCIONADAS" Style="{StaticResource BotonVerde}"
+                        Height="34" Padding="14,0" Margin="0,8,0,6"/>
+                <TextBlock Text="Algunas caracteristicas requieren reinicio. Hyper-V y Sandbox no estan disponibles en Windows Home."
+                           Foreground="{StaticResource Tenue}" FontSize="10.5" TextWrapping="Wrap"/>
+              </StackPanel>
+            </Border>
+
+            <TextBlock Text="PANELES CLASICOS" Style="{StaticResource Titulo}"/>
+            <Border Style="{StaticResource Tarjeta}">
+              <WrapPanel Name="pnlPaneles"/>
+            </Border>
+
+            <TextBlock Name="txtConfigEstado" Foreground="{StaticResource Tenue}" FontSize="11"
+                       TextWrapping="Wrap" Margin="0,2,0,0" Text="Selecciona una reparacion o caracteristica."/>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- ===== APPX ===== -->
+      <TabItem Header="APPX">
+        <Grid Margin="14,14,14,10">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <StackPanel Grid.Row="0" Margin="0,0,0,8">
+            <TextBlock Text="APPS PREINSTALADAS (APPX)" Style="{StaticResource Titulo}"/>
+            <TextBlock Text="Selecciona apps para quitarlas o reinstalarlas. Las marcadas por defecto son bloatware comun."
+                       Foreground="{StaticResource Tenue}" FontSize="11" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <Border Grid.Row="1" Style="{StaticResource Tarjeta}" Padding="10" Margin="0,0,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+              <StackPanel Name="pnlAppx"/>
+            </ScrollViewer>
+          </Border>
+
+          <Grid Grid.Row="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="btnAppxQuitar" Content="QUITAR SELECCIONADAS" Style="{StaticResource BotonAmbar}"
+                    Height="34" Padding="12,0" Margin="0,0,8,0"/>
+            <Button Name="btnAppxInstalar" Grid.Column="1" Content="INSTALAR SELECCIONADAS"
+                    Style="{StaticResource BotonVerde}" Height="34" Padding="12,0" Margin="0,0,8,0"/>
+            <Button Name="btnAppxPredeterminados" Grid.Column="2" Content="PREDETERMINADOS"
+                    Height="34" Padding="10,0" Margin="0,0,8,0"/>
+            <Button Name="btnAppxLimpiar" Grid.Column="3" Content="LIMPIAR"
+                    Height="34" Padding="10,0" Margin="0,0,8,0"/>
+            <Button Name="btnAppxDetectar" Grid.Column="4" Content="DETECTAR INSTALADAS"
+                    Height="34" Padding="10,0" Margin="0,0,8,0"/>
+            <TextBlock Name="txtAppxEstado" Grid.Column="5" Foreground="{StaticResource Tenue}"
+                       FontSize="11" TextWrapping="Wrap" Margin="8,0,0,0" Text="Cargando apps..."/>
+          </Grid>
+        </Grid>
+      </TabItem>
+
     </TabControl>
 
     <!-- ================= PIE ================= -->
@@ -837,24 +1034,27 @@ $script:TareasActivas = 0
 
 function Set-Ocupado {
     param([bool]$Activo)
+    $Botonera = @('btnEscanear', 'btnGuardar', 'btnGuardarSiguiente', 'btnExcel', 'btnSincronizar',
+                  'btnOffice', 'btnApps', 'btnInstalarApps', 'btnAppsRecomendadas', 'btnAppsLimpiar',
+                  'btnActivar', 'btnEdicion', 'btnExportarTodo', 'btnSyncTodo',
+                  'btnTweaksRecargar', 'btnAppxQuitar', 'btnAppxInstalar', 'btnAppxPredeterminados',
+                  'btnAppxLimpiar', 'btnAppxDetectar', 'btnInstalarFeatures',
+                  'btnFixSFC', 'btnFixWU', 'btnFixRed', 'btnFixNTP', 'btnFixTemp', 'btnFixDISM',
+                  'btnFixWinget', 'btnFixRestore')
+    foreach ($b in $Botonera) {
+        try { $Window.FindName($b).IsEnabled = -not $Activo } catch {}
+    }
+    foreach ($b in @($script:TweakBotones.Values)) {
+        try { $b.IsEnabled = -not $Activo } catch {}
+    }
+
     if ($Activo) {
-        $Botonera = @('btnEscanear', 'btnGuardar', 'btnGuardarSiguiente', 'btnExcel', 'btnSincronizar',
-                      'btnOffice', 'btnApps', 'btnInstalarApps', 'btnAppsRecomendadas', 'btnAppsLimpiar',
-                      'btnActivar', 'btnEdicion', 'btnExportarTodo', 'btnSyncTodo')
-        foreach ($b in $Botonera) {
-            try { $Window.FindName($b).IsEnabled = $false } catch {}
-        }
         $prgBarra.IsIndeterminate = $true
         $prgBarra.Visibility = 'Visible'
     } else {
-        $Botonera = @('btnEscanear', 'btnGuardar', 'btnGuardarSiguiente', 'btnExcel', 'btnSincronizar',
-                      'btnOffice', 'btnApps', 'btnInstalarApps', 'btnAppsRecomendadas', 'btnAppsLimpiar',
-                      'btnActivar', 'btnEdicion', 'btnExportarTodo', 'btnSyncTodo')
-        foreach ($b in $Botonera) {
-            try { $Window.FindName($b).IsEnabled = $true } catch {}
-        }
         $prgBarra.IsIndeterminate = $false
         $prgBarra.Visibility = 'Hidden'
+        if (Get-Command Update-TweakBotonTodos -ErrorAction SilentlyContinue) { Update-TweakBotonTodos }
     }
 }
 
@@ -1699,12 +1899,18 @@ function Start-InstalarSeleccionadas {
         foreach ($a in $paquete.Apps) {
             $estado = 'ERROR'
             try {
+                $id = [string]$a.Id
+                $source = 'winget'
+                if ($id.StartsWith('msstore:')) {
+                    $source = 'msstore'
+                    $id = $id.Substring(8)
+                }
                 $p = Start-Process -FilePath 'winget' -ArgumentList @(
-                    'install', '--id', $a.Id, '-e', '--source', 'winget', '--silent',
+                    'install', '--id', $id, '-e', '--source', $source, '--silent',
                     '--accept-package-agreements', '--accept-source-agreements', '--disable-interactivity'
                 ) -Wait -PassThru -WindowStyle Hidden
 
-                if ($p.ExitCode -eq 0 -or $p.ExitCode -eq -1978335189) {
+                if ($p.ExitCode -eq 0 -or $p.ExitCode -eq -1978335189 -or $p.ExitCode -eq -1978335135) {
                     $ok++
                     $estado = 'OK'
                 } else {
@@ -1761,11 +1967,17 @@ function Start-AppsBasicas {
         $ok = 0; $fail = 0
         foreach ($id in $ids) {
             try {
+                $appId = [string]$id
+                $source = 'winget'
+                if ($appId.StartsWith('msstore:')) {
+                    $source = 'msstore'
+                    $appId = $appId.Substring(8)
+                }
                 $p = Start-Process -FilePath 'winget' -ArgumentList @(
-                    'install', '--id', $id, '-e', '--silent',
+                    'install', '--id', $appId, '-e', '--source', $source, '--silent',
                     '--accept-package-agreements', '--accept-source-agreements', '--disable-interactivity'
                 ) -Wait -PassThru -WindowStyle Hidden
-                if ($p.ExitCode -eq 0) { $ok++ } else { $fail++ }
+                if ($p.ExitCode -eq 0 -or $p.ExitCode -eq -1978335135) { $ok++ } else { $fail++ }
             } catch { $fail++ }
         }
         return [PSCustomObject]@{ Ok = $ok; Fallidos = $fail }
@@ -1822,6 +2034,816 @@ function Start-RepararWinget {
         } else {
             Set-Estado 'No se pudo reparar winget' 'error'
             Write-Log "Winget: $resultado" 'ERROR'
+        }
+    }
+}
+
+# =============================================================================
+#  AJUSTES PORTADOS DE WINUTIL (MIT)
+# =============================================================================
+$script:WinFeatures = @(
+    [PSCustomObject]@{ Id='DotNet'; Nombre='.NET Framework 2/3/4'; Features=@('NetFx3','NetFx4-AdvSrvs'); Descripcion='Habilita .NET Framework 2, 3 y 4 para aplicaciones antiguas.' }
+    [PSCustomObject]@{ Id='HyperV'; Nombre='Hyper-V'; Features=@('Microsoft-Hyper-V-All'); Descripcion='Virtualizacion de Hyper-V. No disponible en Windows Home.' }
+    [PSCustomObject]@{ Id='WSL'; Nombre='WSL (Linux)'; Features=@('Microsoft-Windows-Subsystem-Linux','VirtualMachinePlatform'); Descripcion='Subsistema de Windows para Linux y plataforma de maquinas virtuales.' }
+    [PSCustomObject]@{ Id='Sandbox'; Nombre='Windows Sandbox'; Features=@('Containers-DisposableClientVM'); Descripcion='Escritorio aislado para probar programas. No disponible en Windows Home.' }
+    [PSCustomObject]@{ Id='NFS'; Nombre='Cliente NFS'; Features=@('ServicesForNFS-ClientOnly','ClientForNFS-Infrastructure','NFS-Administration'); Descripcion='Acceso a recursos compartidos NFS.' }
+    [PSCustomObject]@{ Id='LegacyMedia'; Nombre='Reproductor y DirectPlay'; Features=@('WindowsMediaPlayer','MediaPlayback','DirectPlay','LegacyComponents'); Descripcion='Componentes multimedia y juegos antiguos.' }
+    [PSCustomObject]@{ Id='OpenSSH'; Nombre='Servidor OpenSSH'; Features=@('OpenSSH-Server'); Descripcion='Permite conexiones SSH al equipo.' }
+)
+
+$script:PanelesClasicos = @(
+    [PSCustomObject]@{ Nombre='Administracion de equipos'; Exe='compmgmt.msc'; Args='' }
+    [PSCustomObject]@{ Nombre='Panel de control'; Exe='control.exe'; Args='' }
+    [PSCustomObject]@{ Nombre='Propiedades del mouse'; Exe='control.exe'; Args='mouse' }
+    [PSCustomObject]@{ Nombre='Conexiones de red'; Exe='control.exe'; Args='netconnections' }
+    [PSCustomObject]@{ Nombre='Energia'; Exe='control.exe'; Args='powercfg.cpl' }
+    [PSCustomObject]@{ Nombre='Impresoras'; Exe='control.exe'; Args='printers' }
+    [PSCustomObject]@{ Nombre='Programas y caracteristicas'; Exe='appwiz.cpl'; Args='' }
+    [PSCustomObject]@{ Nombre='Region'; Exe='intl.cpl'; Args='' }
+    [PSCustomObject]@{ Nombre='Seguridad y mantenimiento'; Exe='wscui.cpl'; Args='' }
+    [PSCustomObject]@{ Nombre='Sonido'; Exe='mmsys.cpl'; Args='' }
+    [PSCustomObject]@{ Nombre='Propiedades del sistema'; Exe='sysdm.cpl'; Args='' }
+    [PSCustomObject]@{ Nombre='Fecha y hora'; Exe='timedate.cpl'; Args='' }
+    [PSCustomObject]@{ Nombre='Firewall de Windows'; Exe='control.exe'; Args='firewall.cpl' }
+    [PSCustomObject]@{ Nombre='Restaurar sistema'; Exe='rstrui.exe'; Args='' }
+)
+
+function Update-TweakBoton {
+    param($Tweak)
+    $btn = $script:TweakBotones[$Tweak.Id]
+    $lbl = $script:TweakEstados[$Tweak.Id]
+    if (-not $btn) { return }
+
+    if ($Tweak.Accion) {
+        $btn.Content = 'EJECUTAR'
+        $btn.Style = $Window.FindResource('BotonAzul')
+        $btn.IsEnabled = $true
+        if ($lbl) { $lbl.Text = 'Accion puntual'; $lbl.Foreground = '#8494A6' }
+        return
+    }
+
+    if (Test-TweakAplicado $Tweak.Id) {
+        if ($Tweak.SinDeshacer) {
+            $btn.Content = 'APLICADO'
+            $btn.IsEnabled = $false
+            if ($lbl) { $lbl.Text = 'Aplicado (sin deshacer)'; $lbl.Foreground = '#FFB300' }
+        } else {
+            $btn.Content = 'DESHACER'
+            $btn.Style = $Window.FindResource('BotonAmbar')
+            $btn.IsEnabled = $true
+            if ($lbl) { $lbl.Text = 'Aplicado'; $lbl.Foreground = '#FFB300' }
+        }
+    } else {
+        $btn.Content = 'APLICAR'
+        $btn.Style = $Window.FindResource('BotonVerde')
+        $btn.IsEnabled = $true
+        if ($lbl) { $lbl.Text = 'No aplicado'; $lbl.Foreground = '#8494A6' }
+    }
+}
+
+function Update-TweakBotonTodos {
+    foreach ($t in @($script:TweaksCatalogo)) { Update-TweakBoton $t }
+}
+
+function Construir-PanelTweaks {
+    $pnlTweaks.Children.Clear()
+    $script:TweakBotones = @{}
+    $script:TweakEstados = @{}
+
+    $orden = @('Privacidad', 'Interfaz', 'Sistema', 'Mantenimiento')
+    $cats = @($orden) + @($script:TweaksCatalogo | ForEach-Object { $_.Categoria } |
+        Where-Object { $orden -notcontains $_ } | Sort-Object -Unique)
+
+    foreach ($cat in $cats) {
+        $items = @($script:TweaksCatalogo | Where-Object { $_.Categoria -eq $cat })
+        if ($items.Count -eq 0) { continue }
+
+        $head = New-Object System.Windows.Controls.TextBlock
+        $head.Text = "{0}  ({1})" -f $cat.ToUpperInvariant(), $items.Count
+        $head.Foreground = '#29B6F6'
+        $head.FontSize = 12
+        $head.FontWeight = 'SemiBold'
+        $head.Margin = '4,10,0,6'
+        $pnlTweaks.Children.Add($head) | Out-Null
+
+        $wrap = New-Object System.Windows.Controls.WrapPanel
+        foreach ($t in $items) {
+            $card = New-Object System.Windows.Controls.Border
+            $card.Style = $Window.FindResource('Tarjeta')
+            $card.Width = 368
+            $card.Padding = '12'
+            $card.Margin = '0,0,12,12'
+
+            $sp = New-Object System.Windows.Controls.StackPanel
+
+            $titulo = New-Object System.Windows.Controls.TextBlock
+            $titulo.Text = $t.Nombre
+            $titulo.FontSize = 13
+            $titulo.FontWeight = 'SemiBold'
+            $titulo.Foreground = '#E6EDF3'
+            $titulo.TextWrapping = 'Wrap'
+            $sp.Children.Add($titulo) | Out-Null
+
+            $riesgo = New-Object System.Windows.Controls.TextBlock
+            $riesgo.Text = if ($t.Riesgo -eq 'Avanzado') { 'AVANZADO' } else { 'SEGURO' }
+            $riesgo.FontSize = 9.5
+            $riesgo.FontWeight = 'SemiBold'
+            $riesgo.Foreground = if ($t.Riesgo -eq 'Avanzado') { '#FFB300' } else { '#00E676' }
+            $riesgo.Margin = '0,2,0,4'
+            $sp.Children.Add($riesgo) | Out-Null
+
+            $desc = New-Object System.Windows.Controls.TextBlock
+            $desc.Text = $t.Descripcion
+            $desc.FontSize = 10.5
+            $desc.Foreground = '#8494A6'
+            $desc.TextWrapping = 'Wrap'
+            $desc.Margin = '0,0,0,4'
+            $sp.Children.Add($desc) | Out-Null
+
+            $estado = New-Object System.Windows.Controls.TextBlock
+            $estado.FontSize = 10
+            $estado.Foreground = '#8494A6'
+            $estado.Margin = '0,4,0,0'
+            $sp.Children.Add($estado) | Out-Null
+
+            $btn = New-Object System.Windows.Controls.Button
+            $btn.Height = 30
+            $btn.Padding = '12,0'
+            $btn.Margin = '0,8,0,0'
+            $btn.HorizontalAlignment = 'Left'
+            $btn.Tag = $t.Id
+            $btn.Add_Click({ param($s, $e) Invoke-TweakUI $s.Tag })
+            $sp.Children.Add($btn) | Out-Null
+
+            $script:TweakBotones[$t.Id] = $btn
+            $script:TweakEstados[$t.Id] = $estado
+
+            $card.Child = $sp
+            $wrap.Children.Add($card) | Out-Null
+        }
+        $pnlTweaks.Children.Add($wrap) | Out-Null
+    }
+
+    Update-TweakBotonTodos
+    $txtTweaksEstado.Text = "{0} ajustes disponibles. Los cambios se guardan en Data\Ajustes\estado.json." -f $script:TweaksCatalogo.Count
+}
+
+function Invoke-TweakUI {
+    param([string]$Id)
+    $t = $script:TweaksCatalogo | Where-Object { $_.Id -eq $Id } | Select-Object -First 1
+    if (-not $t) { return }
+
+    if ($t.Accion) {
+        $r = [System.Windows.MessageBox]::Show(
+            "Se ejecutara: $($t.Nombre).`n`n$($t.Descripcion)`n`n¿Continuar?",
+            'Ajustes', 'YesNo', 'Question')
+        if ($r -eq 'Yes') { Start-TweakTask -Tweak $t -Undo $false }
+        return
+    }
+
+    $aplicado = Test-TweakAplicado $t.Id
+    if ($aplicado -and $t.SinDeshacer) {
+        Show-Mensaje 'Este ajuste se aplico y no se puede deshacer desde aqui.' 'Ajustes' 'Information'
+        return
+    }
+
+    $accion = if ($aplicado) { 'deshacer' } else { 'aplicar' }
+    $aviso = if ($t.Riesgo -eq 'Avanzado') { "`n`nATENCION: ajuste AVANZADO. Puede afectar funciones del sistema." } else { '' }
+    $r = [System.Windows.MessageBox]::Show(
+        "Se va a $accion el ajuste:`n`n$($t.Nombre)`n$($t.Descripcion)$aviso`n`n¿Continuar?",
+        'Ajustes', 'YesNo', 'Question')
+    if ($r -ne 'Yes') { return }
+    Start-TweakTask -Tweak $t -Undo $aplicado
+}
+
+function Start-TweakTask {
+    param($Tweak, [bool]$Undo)
+    $tweak = $Tweak
+    $payload = [PSCustomObject]@{
+        Tweak = $Tweak
+        Undo = $Undo
+        EstadoPath = $script:TweaksEstadoPath
+        Log = $script:LogFile
+    }
+
+    Set-Estado ("Ajuste en curso: {0}" -f $tweak.Nombre) 'info'
+    $txtTweaksEstado.Text = "Aplicando $($tweak.Nombre)..."
+    Write-Log ("Ajuste {0}: {1}" -f $(if ($Undo) { 'deshacer' } else { 'aplicar' }), $tweak.Id)
+
+    Start-Tarea -Script {
+        param($p)
+        $t = $p.Tweak
+        $undo = [bool]$p.Undo
+        $estadoPath = $p.EstadoPath
+        $logPath = $p.Log
+        $errores = New-Object System.Collections.ArrayList
+
+        function Write-AjusteLog([string]$m) {
+            try { Add-Content -Path $logPath -Encoding UTF8 -Value ("{0} [AJUSTE] {1}" -f (Get-Date -Format 'HH:mm:ss'), $m) } catch {}
+        }
+        function Ensure-HKU {
+            if (-not (Test-Path 'HKU:\')) {
+                try { New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS -ErrorAction Stop | Out-Null } catch {}
+            }
+        }
+        function Read-Estado {
+            if (Test-Path $estadoPath) {
+                try {
+                    $leido = Get-Content -Path $estadoPath -Raw -Encoding UTF8 | ConvertFrom-Json
+                    if ($leido) { return $leido }
+                } catch {}
+            }
+            return [PSCustomObject]@{}
+        }
+        function Save-Estado($s) {
+            try {
+                $dir = Split-Path $estadoPath -Parent
+                if (-not (Test-Path $dir)) { New-Item -Path $dir -ItemType Directory -Force | Out-Null }
+                $s | ConvertTo-Json -Depth 12 | Out-File -FilePath $estadoPath -Encoding UTF8 -Force
+            } catch {
+                [void]$errores.Add("No se pudo guardar el estado: $($_.Exception.Message)")
+            }
+        }
+        function Get-RegActual([string]$path, [string]$name) {
+            try {
+                $item = Get-ItemProperty -Path $path -Name $name -ErrorAction Stop
+                $tipo = (Get-Item -Path $path).GetValueKind($name).ToString()
+                return [PSCustomObject]@{ Path=$path; Name=$name; Existia=$true; Valor=$item.$name; Tipo=$tipo }
+            } catch {
+                return [PSCustomObject]@{ Path=$path; Name=$name; Existia=$false; Valor='<RemoveEntry>'; Tipo='String' }
+            }
+        }
+        function Set-RegValor([string]$path, [string]$name, $valor, [string]$tipo) {
+            try {
+                if ("$valor" -eq '<RemoveEntry>') {
+                    if (Test-Path $path) { Remove-ItemProperty -Path $path -Name $name -Force -ErrorAction SilentlyContinue }
+                } else {
+                    if (-not (Test-Path $path)) { New-Item -Path $path -Force -ErrorAction Stop | Out-Null }
+                    Set-ItemProperty -Path $path -Name $name -Value $valor -Type $tipo -Force -ErrorAction Stop
+                }
+            } catch {
+                [void]$errores.Add("Registro ${path}\${name}: $($_.Exception.Message)")
+            }
+        }
+        function Get-ServicioActual([string]$name) {
+            try {
+                $svc = Get-Service -Name $name -ErrorAction Stop
+                if ($svc.StartType) { return [string]$svc.StartType }
+            } catch {}
+            try {
+                $cim = Get-CimInstance Win32_Service -Filter "Name='$name'" -ErrorAction Stop
+                switch ($cim.StartMode) {
+                    'Auto' { return 'Automatic' }
+                    'Manual' { return 'Manual' }
+                    'Disabled' { return 'Disabled' }
+                    default { return [string]$cim.StartMode }
+                }
+            } catch { return $null }
+        }
+        function Set-ServicioTipo([string]$name, [string]$tipo) {
+            if (-not $tipo) { return }
+            try {
+                Set-Service -Name $name -StartupType $tipo -ErrorAction Stop
+            } catch {
+                [void]$errores.Add("Servicio ${name}: $($_.Exception.Message)")
+            }
+        }
+
+        Ensure-HKU
+        $estado = Read-Estado
+
+        if ($undo) {
+            $entry = $null
+            if ($estado.PSObject.Properties.Name -contains $t.Id) { $entry = $estado.($t.Id) }
+
+            if ($entry -and $entry.Registro) {
+                foreach ($r in @($entry.Registro)) {
+                    Set-RegValor $r.Path $r.Name $r.Valor $r.Tipo
+                }
+            } elseif ($t.Registro) {
+                foreach ($r in @($t.Registro)) {
+                    Set-RegValor $r.Path $r.Name $r.OriginalValue $r.Type
+                }
+            }
+
+            if ($entry -and $entry.Servicios) {
+                foreach ($s in @($entry.Servicios)) {
+                    Set-ServicioTipo $s.Name $s.Inicio
+                }
+            } elseif ($t.Servicios) {
+                foreach ($s in @($t.Servicios)) {
+                    Set-ServicioTipo $s.Name $s.OriginalType
+                }
+            }
+
+            foreach ($sc in @($t.UndoScript)) {
+                if ([string]::IsNullOrWhiteSpace($sc)) { continue }
+                try { Invoke-Expression $sc } catch { [void]$errores.Add("Script: $($_.Exception.Message)") }
+            }
+
+            if ($estado.PSObject.Properties.Name -contains $t.Id) {
+                $estado.PSObject.Properties.Remove($t.Id)
+                Save-Estado $estado
+            }
+            Write-AjusteLog "Deshecho: $($t.Id)"
+        } else {
+            $regs = @()
+            $servs = @()
+            foreach ($r in @($t.Registro)) {
+                $regs += Get-RegActual $r.Path $r.Name
+                Set-RegValor $r.Path $r.Name $r.Value $r.Type
+            }
+            foreach ($s in @($t.Servicios)) {
+                $servs += [PSCustomObject]@{ Name=$s.Name; Inicio=(Get-ServicioActual $s.Name) }
+                Set-ServicioTipo $s.Name $s.StartupType
+            }
+            foreach ($sc in @($t.Script)) {
+                if ([string]::IsNullOrWhiteSpace($sc)) { continue }
+                try { Invoke-Expression $sc } catch { [void]$errores.Add("Script: $($_.Exception.Message)") }
+            }
+
+            if (-not $t.Accion) {
+                $entry = [PSCustomObject]@{
+                    Fecha = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+                    Registro = @($regs)
+                    Servicios = @($servs)
+                }
+                $estado | Add-Member -NotePropertyName $t.Id -NotePropertyValue $entry -Force
+                Save-Estado $estado
+            }
+            Write-AjusteLog "Aplicado: $($t.Id)"
+        }
+
+        return [PSCustomObject]@{
+            Ok = ($errores.Count -eq 0)
+            Errores = @($errores)
+            Id = $t.Id
+            Undo = $undo
+            Accion = [bool]$t.Accion
+        }
+    } -Argumentos @(, $payload) -OnDone ({
+        param($resultado, $errorTxt)
+        Load-TweaksEstado
+        Update-TweakBotonTodos
+
+        if ($resultado) {
+            if ($resultado.Ok) {
+                $txtTweaksEstado.Text = if ($resultado.Accion) { "Listo: $($tweak.Nombre)" } else { "Ajuste listo: $($tweak.Nombre)" }
+                Set-Estado $txtTweaksEstado.Text 'ok'
+                Write-Log ("Ajuste completado: {0}" -f $tweak.Id)
+            } else {
+                $detalle = (@($resultado.Errores) -join ' | ')
+                $txtTweaksEstado.Text = "Con avisos: $($tweak.Nombre) - $detalle"
+                Set-Estado "Ajuste con avisos: $($tweak.Nombre)" 'warn'
+                Write-Log ("Ajuste con avisos {0}: {1}" -f $tweak.Id, $detalle) 'WARN'
+            }
+        } else {
+            $txtTweaksEstado.Text = "Error: $errorTxt"
+            Set-Estado "Error aplicando $($tweak.Nombre)" 'error'
+            Write-Log ("Ajuste fallido {0}: {1}" -f $tweak.Id, $errorTxt) 'ERROR'
+        }
+    }.GetNewClosure())
+}
+
+# =============================================================================
+#  APPX (apps preinstaladas)
+# =============================================================================
+function Update-ResumenAppx {
+    $sel = @($script:AppxCatalogo | Where-Object { $_.Seleccionada }).Count
+    $inst = @($script:AppxInstaladas).Count
+    $txtAppxEstado.Text = "{0} apps · {1} instaladas · {2} seleccionadas" -f $script:AppxCatalogo.Count, $inst, $sel
+}
+
+function Update-EtiquetasAppx {
+    foreach ($a in @($script:AppxCatalogo)) {
+        $cb = $script:AppxChecks[$a.Id]
+        if (-not $cb) { continue }
+        $marca = if (@($script:AppxInstaladas) -contains $a.Id) { '● ' } else { '' }
+        $cb.Content = $marca + $a.Nombre
+    }
+}
+
+function Construir-PanelAppx {
+    $pnlAppx.Children.Clear()
+    $script:AppxChecks = @{}
+    $cats = @($script:AppxCatalogo | ForEach-Object { $_.Categoria } | Sort-Object -Unique)
+
+    foreach ($cat in $cats) {
+        $items = @($script:AppxCatalogo | Where-Object { $_.Categoria -eq $cat })
+        if ($items.Count -eq 0) { continue }
+
+        $head = New-Object System.Windows.Controls.TextBlock
+        $head.Text = "{0}  ({1})" -f $cat.ToUpperInvariant(), $items.Count
+        $head.Foreground = '#29B6F6'
+        $head.FontSize = 12
+        $head.FontWeight = 'SemiBold'
+        $head.Margin = '4,10,0,6'
+        $pnlAppx.Children.Add($head) | Out-Null
+
+        $wrap = New-Object System.Windows.Controls.WrapPanel
+        foreach ($a in $items) {
+            $cb = New-Object System.Windows.Controls.CheckBox
+            $cb.Tag = $a
+            $cb.Width = 270
+            $cb.Margin = '2,4,10,4'
+            $cb.ToolTip = $a.Descripcion
+            $cb.IsChecked = [bool]$a.Seleccionada
+            $cb.Add_Click({
+                param($s, $e)
+                $s.Tag.Seleccionada = [bool]$s.IsChecked
+                Update-ResumenAppx
+            })
+            $script:AppxChecks[$a.Id] = $cb
+            $wrap.Children.Add($cb) | Out-Null
+        }
+        $pnlAppx.Children.Add($wrap) | Out-Null
+    }
+
+    Update-EtiquetasAppx
+    Update-ResumenAppx
+}
+
+function Detectar-Appx {
+    Set-Estado 'Detectando apps instaladas...' 'info'
+    $txtAppxEstado.Text = 'Detectando apps instaladas...'
+    Start-Tarea -Script {
+        param($ids)
+        $instaladas = @()
+        foreach ($id in $ids) {
+            try {
+                if (Get-AppxPackage -Name $id -ErrorAction SilentlyContinue) { $instaladas += $id }
+            } catch {}
+        }
+        return [PSCustomObject]@{ Instaladas = @($instaladas) }
+    } -Argumentos @(, @($script:AppxCatalogo | ForEach-Object { $_.Id })) -OnDone {
+        param($resultado, $errorTxt)
+        if ($resultado) {
+            $script:AppxInstaladas = @($resultado.Instaladas)
+            Update-EtiquetasAppx
+            Update-ResumenAppx
+            Set-Estado ("Apps instaladas detectadas: {0}" -f @($script:AppxInstaladas).Count) 'ok'
+        } else {
+            $txtAppxEstado.Text = "No se pudo detectar: $errorTxt"
+            Set-Estado 'No se pudieron detectar las apps instaladas' 'warn'
+        }
+    }
+}
+
+function Start-QuitarAppx {
+    $sel = @($script:AppxCatalogo | Where-Object { $_.Seleccionada })
+    if ($sel.Count -eq 0) { Show-Mensaje 'Marca al menos una app.' 'Apps preinstaladas'; return }
+
+    $nombres = (@($sel | ForEach-Object { $_.Nombre }) -join ', ')
+    $r = [System.Windows.MessageBox]::Show(
+        "Se quitaran $($sel.Count) apps:`n`n$nombres`n`n¿Continuar?",
+        'Quitar apps preinstaladas', 'YesNo', 'Warning')
+    if ($r -ne 'Yes') { return }
+
+    Set-Estado ("Quitando {0} apps preinstaladas..." -f $sel.Count) 'info'
+    $txtAppxEstado.Text = 'Quitando apps preinstaladas...'
+    Write-Log ("AppX quitar: " + ($sel | ForEach-Object { $_.Id } -join ', '))
+
+    $payload = [PSCustomObject]@{ Apps = $sel; Log = $script:LogFile }
+    Start-Tarea -Script {
+        param($p)
+        $ok = 0
+        $exitosos = @()
+        $fallidos = @()
+        foreach ($a in $p.Apps) {
+            $removido = $false
+            try {
+                $pkgs = @(Get-AppxPackage -Name $a.Id -AllUsers -ErrorAction SilentlyContinue |
+                    Sort-Object PackageFullName -Unique)
+                if ($pkgs.Count -eq 0) {
+                    $removido = $true
+                } else {
+                    foreach ($pkg in $pkgs) {
+                        try {
+                            Remove-AppxPackage -Package $pkg.PackageFullName -AllUsers -ErrorAction Stop
+                            $removido = $true
+                        } catch {}
+                    }
+                }
+                try {
+                    Get-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue |
+                        Where-Object { $_.DisplayName -eq $a.Id } |
+                        ForEach-Object { Remove-AppxProvisionedPackage -Online -PackageName $_.PackageName -ErrorAction SilentlyContinue | Out-Null }
+                } catch {}
+            } catch {}
+
+            if ($removido) { $ok++; $exitosos += $a.Id } else { $fallidos += $a.Nombre }
+            try {
+                Add-Content -Path $p.Log -Encoding UTF8 -Value (
+                    '{0} [APPX] quitar {1} -> {2}' -f (Get-Date -Format 'HH:mm:ss'), $a.Id, $(if ($removido) { 'OK' } else { 'ERROR' }))
+            } catch {}
+        }
+        return [PSCustomObject]@{ Ok=$ok; Exitosos=@($exitosos); Fallidos=@($fallidos) }
+    } -Argumentos @(, $payload) -OnDone {
+        param($resultado, $errorTxt)
+        if ($resultado) {
+            $script:AppxInstaladas = @($script:AppxInstaladas | Where-Object { $resultado.Exitosos -notcontains $_ })
+            foreach ($a in @($script:AppxCatalogo)) { $a.Seleccionada = $false }
+            foreach ($cb in $script:AppxChecks.Values) { $cb.IsChecked = $false }
+            Update-EtiquetasAppx
+            Update-ResumenAppx
+            if (@($resultado.Fallidos).Count -eq 0) {
+                $txtAppxEstado.Text = "Apps quitadas: $($resultado.Ok)"
+                Set-Estado $txtAppxEstado.Text 'ok'
+            } else {
+                $txtAppxEstado.Text = "Quitadas: $($resultado.Ok) · fallidas: $(@($resultado.Fallidos).Count)"
+                Set-Estado 'Algunas apps no se pudieron quitar' 'warn'
+            }
+            Write-Log $txtAppxEstado.Text
+        } else {
+            $txtAppxEstado.Text = "Error: $errorTxt"
+            Set-Estado 'Error quitando apps preinstaladas' 'error'
+            Write-Log "AppX quitar: $errorTxt" 'ERROR'
+        }
+    }
+}
+
+function Start-InstalarAppx {
+    $sel = @($script:AppxCatalogo | Where-Object { $_.Seleccionada })
+    if ($sel.Count -eq 0) { Show-Mensaje 'Marca al menos una app.' 'Apps preinstaladas'; return }
+
+    $nombres = (@($sel | ForEach-Object { $_.Nombre }) -join ', ')
+    $r = [System.Windows.MessageBox]::Show(
+        "Se instalaran o repararan $($sel.Count) apps:`n`n$nombres`n`nRequiere internet y Microsoft Store. ¿Continuar?",
+        'Instalar apps preinstaladas', 'YesNo', 'Question')
+    if ($r -ne 'Yes') { return }
+
+    Set-Estado ("Instalando {0} apps preinstaladas..." -f $sel.Count) 'info'
+    $txtAppxEstado.Text = 'Instalando apps preinstaladas...'
+    Write-Log ("AppX instalar: " + ($sel | ForEach-Object { $_.Id } -join ', '))
+
+    $payload = [PSCustomObject]@{ Apps = $sel; Log = $script:LogFile }
+    Start-Tarea -Script {
+        param($p)
+        $ok = 0
+        $exitosos = @()
+        $fallidos = @()
+        foreach ($a in $p.Apps) {
+            $instalado = $false
+            try {
+                if (Get-AppxPackage -Name $a.Id -ErrorAction SilentlyContinue) {
+                    $instalado = $true
+                } else {
+                    $manifests = @()
+                    Get-AppxPackage -AllUsers -Name $a.Id -ErrorAction SilentlyContinue | ForEach-Object {
+                        if ($_.InstallLocation) { $manifests += (Join-Path $_.InstallLocation 'AppxManifest.xml') }
+                    }
+                    Get-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue |
+                        Where-Object { $_.DisplayName -eq $a.Id } | ForEach-Object {
+                            if ($_.InstallLocation) { $manifests += (Join-Path $_.InstallLocation 'AppxManifest.xml') }
+                        }
+                    $manifest = $manifests | Where-Object { Test-Path $_ } | Select-Object -First 1
+                    if ($manifest) {
+                        try {
+                            Add-AppxPackage -Register $manifest -DisableDevelopmentMode -ErrorAction Stop
+                            $instalado = $true
+                        } catch {}
+                    }
+                    if (-not $instalado -and $a.StoreId) {
+                        $proc = Start-Process -FilePath 'winget' -ArgumentList @(
+                            'install', '--id', $a.StoreId, '--source', 'msstore', '--silent',
+                            '--accept-package-agreements', '--accept-source-agreements', '--disable-interactivity'
+                        ) -Wait -PassThru -WindowStyle Hidden
+                        if ($proc.ExitCode -eq 0 -or $proc.ExitCode -eq -1978335189 -or $proc.ExitCode -eq -1978335135) {
+                            $instalado = $true
+                        }
+                    }
+                }
+            } catch {}
+
+            if ($instalado) { $ok++; $exitosos += $a.Id } else { $fallidos += $a.Nombre }
+            try {
+                Add-Content -Path $p.Log -Encoding UTF8 -Value (
+                    '{0} [APPX] instalar {1} -> {2}' -f (Get-Date -Format 'HH:mm:ss'), $a.Id, $(if ($instalado) { 'OK' } else { 'ERROR' }))
+            } catch {}
+        }
+        return [PSCustomObject]@{ Ok=$ok; Exitosos=@($exitosos); Fallidos=@($fallidos) }
+    } -Argumentos @(, $payload) -OnDone {
+        param($resultado, $errorTxt)
+        if ($resultado) {
+            $script:AppxInstaladas = @(@($script:AppxInstaladas) + @($resultado.Exitosos) | Sort-Object -Unique)
+            foreach ($a in @($script:AppxCatalogo)) { $a.Seleccionada = $false }
+            foreach ($cb in $script:AppxChecks.Values) { $cb.IsChecked = $false }
+            Update-EtiquetasAppx
+            Update-ResumenAppx
+            if (@($resultado.Fallidos).Count -eq 0) {
+                $txtAppxEstado.Text = "Apps instaladas: $($resultado.Ok)"
+                Set-Estado $txtAppxEstado.Text 'ok'
+            } else {
+                $txtAppxEstado.Text = "Instaladas: $($resultado.Ok) · fallidas: $(@($resultado.Fallidos).Count)"
+                Set-Estado 'Algunas apps no se pudieron instalar' 'warn'
+            }
+            Write-Log $txtAppxEstado.Text
+        } else {
+            $txtAppxEstado.Text = "Error: $errorTxt"
+            Set-Estado 'Error instalando apps preinstaladas' 'error'
+            Write-Log "AppX instalar: $errorTxt" 'ERROR'
+        }
+    }
+}
+
+# =============================================================================
+#  CONFIG: reparaciones y caracteristicas
+# =============================================================================
+function Set-ConfigEstado {
+    param([string]$Texto, [string]$Tipo = 'info')
+    $txtConfigEstado.Text = $Texto
+    Set-Estado $Texto $Tipo
+}
+
+function Start-ConfigTask {
+    param([string]$Nombre, [scriptblock]$Script)
+    $nombreTarea = $Nombre
+    Set-ConfigEstado "$Nombre en curso..." 'info'
+    Write-Log ("Config: {0}" -f $Nombre)
+    Start-Tarea -Script $Script -OnDone ({
+        param($resultado, $errorTxt)
+        if ($errorTxt) {
+            Set-ConfigEstado "${nombreTarea}: $errorTxt" 'error'
+            Write-Log ("Config {0}: {1}" -f $nombreTarea, $errorTxt) 'ERROR'
+            return
+        }
+        if ($resultado -and $resultado.PSObject.Properties.Name -contains 'Ok' -and -not $resultado.Ok) {
+            $detalle = if ($resultado.Detalle) { $resultado.Detalle } else { 'revisa el log' }
+            Set-ConfigEstado "$nombreTarea con avisos: $detalle" 'warn'
+            Write-Log ("Config {0}: {1}" -f $nombreTarea, $detalle) 'WARN'
+            return
+        }
+        $detalle = if ($resultado -and $resultado.Detalle) { $resultado.Detalle } else { 'completado' }
+        Set-ConfigEstado "$nombreTarea`: $detalle" 'ok'
+        Write-Log ("Config completado: {0} - {1}" -f $nombreTarea, $detalle)
+    }.GetNewClosure())
+}
+
+function Start-FixSFC {
+    Start-ConfigTask 'SFC + DISM' {
+        $sfc = Start-Process -FilePath 'sfc.exe' -ArgumentList '/scannow' -Wait -PassThru -WindowStyle Hidden
+        $dism = Start-Process -FilePath 'dism.exe' -ArgumentList @('/Online','/Cleanup-Image','/RestoreHealth') -Wait -PassThru -WindowStyle Hidden
+        $ok = ($sfc.ExitCode -eq 0 -and $dism.ExitCode -eq 0)
+        return [PSCustomObject]@{ Ok=$ok; Detalle=("SFC={0}, DISM={1}" -f $sfc.ExitCode, $dism.ExitCode) }
+    }
+}
+
+function Start-FixWU {
+    $r = [System.Windows.MessageBox]::Show(
+        "Se detendran los servicios de Windows Update, se renombraran SoftwareDistribution y Catroot2 y se reregistraran DLLs.`n`nEl equipo puede tardar varios minutos y conviene reiniciar al terminar. ¿Continuar?",
+        'Resetear Windows Update', 'YesNo', 'Warning')
+    if ($r -ne 'Yes') { return }
+
+    Start-ConfigTask 'Reset de Windows Update' {
+        $ErrorActionPreference = 'SilentlyContinue'
+        $stamp = Get-Date -Format 'yyyyMMddHHmm'
+        Stop-Service BITS, wuauserv, cryptsvc, appidsvc -Force -ErrorAction SilentlyContinue
+        Remove-Item "$env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader\qmgr*.dat" -Force -ErrorAction SilentlyContinue
+        if (Test-Path "$env:SystemRoot\SoftwareDistribution") {
+            Rename-Item "$env:SystemRoot\SoftwareDistribution" "SoftwareDistribution.bak-$stamp" -ErrorAction SilentlyContinue
+        }
+        if (Test-Path "$env:SystemRoot\System32\Catroot2") {
+            Rename-Item "$env:SystemRoot\System32\Catroot2" "Catroot2.bak-$stamp" -ErrorAction SilentlyContinue
+        }
+        $dlls = @('atl.dll','urlmon.dll','mshtml.dll','shdocvw.dll','browseui.dll','jscript.dll','vbscript.dll',
+                  'scrrun.dll','msxml3.dll','msxml6.dll','actxprxy.dll','softpub.dll','wintrust.dll','dssenh.dll',
+                  'rsaenh.dll','oleaut32.dll','ole32.dll','shell32.dll','initpki.dll','wuapi.dll','wuaueng.dll',
+                  'wups.dll','wups2.dll','qmgr.dll')
+        Push-Location "$env:SystemRoot\System32"
+        foreach ($d in $dlls) { Start-Process -FilePath 'regsvr32.exe' -ArgumentList '/s', $d -Wait -WindowStyle Hidden }
+        Pop-Location
+        Start-Process -FilePath 'netsh.exe' -ArgumentList @('winsock','reset') -Wait -WindowStyle Hidden
+        Start-Process -FilePath 'netsh.exe' -ArgumentList @('winhttp','reset','proxy') -Wait -WindowStyle Hidden
+        Set-Service -Name BITS -StartupType Manual -ErrorAction SilentlyContinue
+        Set-Service -Name wuauserv -StartupType Manual -ErrorAction SilentlyContinue
+        Set-Service -Name cryptsvc -StartupType Manual -ErrorAction SilentlyContinue
+        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\AppIDSvc' -Name Start -Value 3 -Type DWord -ErrorAction SilentlyContinue
+        Start-Service BITS, wuauserv, cryptsvc, appidsvc -ErrorAction SilentlyContinue
+        try { (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow() } catch {}
+        return [PSCustomObject]@{ Ok=$true; Detalle='servicios reiniciados; reinicia el equipo' }
+    }
+}
+
+function Start-FixRed {
+    $r = [System.Windows.MessageBox]::Show(
+        "Se resetearan winsock, TCP/IP y WinHTTP. Las conexiones de red se cortaran un momento y hace falta reiniciar. ¿Continuar?",
+        'Resetear red', 'YesNo', 'Warning')
+    if ($r -ne 'Yes') { return }
+
+    Start-ConfigTask 'Reset de red' {
+        Start-Process -FilePath 'netsh.exe' -ArgumentList @('winsock','reset') -Wait -WindowStyle Hidden
+        Start-Process -FilePath 'netsh.exe' -ArgumentList @('int','ip','reset') -Wait -WindowStyle Hidden
+        Start-Process -FilePath 'netsh.exe' -ArgumentList @('winhttp','reset','proxy') -Wait -WindowStyle Hidden
+        Start-Process -FilePath 'ipconfig.exe' -ArgumentList @('/flushdns') -Wait -WindowStyle Hidden
+        Start-Process -FilePath 'ipconfig.exe' -ArgumentList @('/registerdns') -Wait -WindowStyle Hidden
+        return [PSCustomObject]@{ Ok=$true; Detalle='red reseteada; reinicia el equipo' }
+    }
+}
+
+function Start-FixNTP {
+    Start-ConfigTask 'Hora NTP' {
+        Start-Service w32time -ErrorAction SilentlyContinue
+        Start-Process -FilePath 'w32tm.exe' -ArgumentList @('/config','/update','/manualpeerlist:pool.ntp.org,0x8','/syncfromflags:MANUAL') -Wait -WindowStyle Hidden
+        Restart-Service w32time -ErrorAction SilentlyContinue
+        $p = Start-Process -FilePath 'w32tm.exe' -ArgumentList @('/resync') -Wait -PassThru -WindowStyle Hidden
+        return [PSCustomObject]@{ Ok=($p.ExitCode -eq 0); Detalle=("w32time resync={0}" -f $p.ExitCode) }
+    }
+}
+
+function Start-FixTemp {
+    Start-ConfigTask 'Limpiar temporales' {
+        $antes = 0
+        try { $antes = @(Get-ChildItem $env:TEMP -Force -ErrorAction SilentlyContinue).Count } catch {}
+        Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path "$env:SystemRoot\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
+        return [PSCustomObject]@{ Ok=$true; Detalle=("temporales del usuario: {0} elementos" -f $antes) }
+    }
+}
+
+function Start-FixDISM {
+    Start-ConfigTask 'Limpieza de componentes' {
+        $p = Start-Process -FilePath 'dism.exe' -ArgumentList @('/Online','/Cleanup-Image','/StartComponentCleanup') -Wait -PassThru -WindowStyle Hidden
+        return [PSCustomObject]@{ Ok=($p.ExitCode -eq 0); Detalle=("DISM={0}" -f $p.ExitCode) }
+    }
+}
+
+function Construir-PanelConfig {
+    $pnlFeatures.Children.Clear()
+    $pnlPaneles.Children.Clear()
+
+    foreach ($f in @($script:WinFeatures)) {
+        $cb = New-Object System.Windows.Controls.CheckBox
+        $cb.Tag = $f
+        $cb.Content = $f.Nombre
+        $cb.Width = 300
+        $cb.Margin = '2,4,10,4'
+        $cb.ToolTip = $f.Descripcion
+        $pnlFeatures.Children.Add($cb) | Out-Null
+    }
+
+    foreach ($p in @($script:PanelesClasicos)) {
+        $btn = New-Object System.Windows.Controls.Button
+        $btn.Content = $p.Nombre
+        $btn.Tag = $p
+        $btn.Height = 30
+        $btn.Padding = '10,0'
+        $btn.Margin = '0,0,8,8'
+        $btn.Add_Click({
+            param($s, $e)
+            $panel = $s.Tag
+            try {
+                if ($panel.Args) { Start-Process -FilePath $panel.Exe -ArgumentList $panel.Args }
+                else { Start-Process -FilePath $panel.Exe }
+            } catch {
+                Show-Mensaje "No se pudo abrir $($panel.Nombre): $($_.Exception.Message)" 'Paneles' 'Warning'
+            }
+        })
+        $pnlPaneles.Children.Add($btn) | Out-Null
+    }
+}
+
+function Start-InstalarFeatures {
+    # Recoger checkboxes marcados
+    $sel = @()
+    foreach ($cb in @($pnlFeatures.Children)) {
+        if ($cb -is [System.Windows.Controls.CheckBox] -and $cb.IsChecked) { $sel += $cb.Tag }
+    }
+    if ($sel.Count -eq 0) { Show-Mensaje 'Marca al menos una caracteristica.' 'Caracteristicas'; return }
+
+    $nombres = (@($sel | ForEach-Object { $_.Nombre }) -join ', ')
+    $r = [System.Windows.MessageBox]::Show(
+        "Se instalaran:$nombres`n`nPuede requerir reinicio y descarga desde Windows Update. ¿Continuar?",
+        'Caracteristicas de Windows', 'YesNo', 'Question')
+    if ($r -ne 'Yes') { return }
+
+    $payload = [PSCustomObject]@{ Features = $sel; Log = $script:LogFile }
+    Set-ConfigEstado 'Instalando caracteristicas de Windows...' 'info'
+    Start-Tarea -Script {
+        param($p)
+        $ok = 0
+        $fail = @()
+        foreach ($f in $p.Features) {
+            foreach ($name in @($f.Features)) {
+                try {
+                    Enable-WindowsOptionalFeature -Online -FeatureName $name -All -NoRestart -ErrorAction Stop | Out-Null
+                    $ok++
+                } catch {
+                    $fail += ("{0}: {1}" -f $name, $_.Exception.Message)
+                }
+            }
+        }
+        return [PSCustomObject]@{ Ok=$ok; Fallidos=@($fail) }
+    } -Argumentos @(, $payload) -OnDone {
+        param($resultado, $errorTxt)
+        if ($resultado) {
+            if (@($resultado.Fallidos).Count -eq 0) {
+                Set-ConfigEstado ("Caracteristicas instaladas: {0}. Puede requerir reinicio." -f $resultado.Ok) 'ok'
+            } else {
+                Set-ConfigEstado ("Instaladas: {0} · fallidas: {1}" -f $resultado.Ok, @($resultado.Fallidos).Count) 'warn'
+                Write-Log ("Features fallidas: " + (@($resultado.Fallidos) -join ' | ')) 'WARN'
+            }
+        } else {
+            Set-ConfigEstado "Error instalando caracteristicas: $errorTxt" 'error'
         }
     }
 }
@@ -1901,6 +2923,42 @@ $cmbCategoriaApp.Add_SelectionChanged({ Update-ListaApps })
 $btnRuntimes.Add_Click({ Start-Runtimes })
 $btnWingetReparar.Add_Click({ Start-RepararWinget })
 
+# Ajustes
+$btnTweaksRecargar.Add_Click({
+    Load-TweaksEstado
+    Update-TweakBotonTodos
+    $txtTweaksEstado.Text = "Estado actualizado: {0} ajustes aplicados." -f @($script:TweaksEstado.PSObject.Properties).Count
+})
+
+# AppX
+$btnAppxQuitar.Add_Click({ Start-QuitarAppx })
+$btnAppxInstalar.Add_Click({ Start-InstalarAppx })
+$btnAppxPredeterminados.Add_Click({
+    foreach ($a in @($script:AppxCatalogo)) {
+        $a.Seleccionada = [bool]$a.Predeterminada
+        $cb = $script:AppxChecks[$a.Id]
+        if ($cb) { $cb.IsChecked = [bool]$a.Seleccionada }
+    }
+    Update-ResumenAppx
+})
+$btnAppxLimpiar.Add_Click({
+    foreach ($a in @($script:AppxCatalogo)) { $a.Seleccionada = $false }
+    foreach ($cb in $script:AppxChecks.Values) { $cb.IsChecked = $false }
+    Update-ResumenAppx
+})
+$btnAppxDetectar.Add_Click({ Detectar-Appx })
+
+# Config
+$btnFixSFC.Add_Click({ Start-FixSFC })
+$btnFixWU.Add_Click({ Start-FixWU })
+$btnFixRed.Add_Click({ Start-FixRed })
+$btnFixNTP.Add_Click({ Start-FixNTP })
+$btnFixTemp.Add_Click({ Start-FixTemp })
+$btnFixDISM.Add_Click({ Start-FixDISM })
+$btnFixWinget.Add_Click({ Start-RepararWinget })
+$btnFixRestore.Add_Click({ Start-PuntoRestauracion })
+$btnInstalarFeatures.Add_Click({ Start-InstalarFeatures })
+
 # Atajos de teclado
 $Window.Add_KeyDown({
     param($s, $e)
@@ -1927,6 +2985,11 @@ $Window.Add_Loaded({
 
     Actualizar-EstadoOffice
     Inicializar-CatalogoApps
+    Load-TweaksEstado
+    Construir-PanelTweaks
+    Construir-PanelAppx
+    Construir-PanelConfig
+    Detectar-Appx
     Update-Contadores
 
     # Estado de licencias en segundo plano

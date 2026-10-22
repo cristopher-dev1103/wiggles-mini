@@ -27,7 +27,10 @@ WigglesMini.ps1
 WigglesCore.ps1
 config.json
 apps.json
+appx.json
+tweaks.json
 README.md
+TERCEROS.md
 Sheets/Code.gs
 External/Office/Setup.exe
 External/Office/Configuration.xml
@@ -42,7 +45,7 @@ Opciones:
 cd "C:\Users\c.rojas\Documents\PROYECTOS_360\REPORTE\2-Wiggles_Mini"
 git init
 git add .
-git commit -m "Wiggles Mini 1.0"
+git commit -m "Wiggles Mini 1.3.0"
 git branch -M main
 git remote add origin https://github.com/TU-USUARIO/wiggles-mini.git
 git push -u origin main

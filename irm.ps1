@@ -21,13 +21,17 @@ $BaseUrl = 'https://raw.githubusercontent.com/cristopher-dev1103/wiggles-mini/ma
 # Permite probar sin publicar:  $env:WIGGLES_BASEURL = 'http://127.0.0.1:8000'
 if ($env:WIGGLES_BASEURL) { $BaseUrl = $env:WIGGLES_BASEURL.TrimEnd('/') }
 
+try { if ($env:TEMP) { $env:TEMP = [System.IO.Path]::GetFullPath($env:TEMP) } } catch {}
 $Destino = Join-Path $env:TEMP 'WigglesMini'
 $Archivos = @(
     'WigglesMini.ps1'
     'WigglesCore.ps1'
     'config.json'
     'apps.json'
+    'appx.json'
+    'tweaks.json'
     'README.md'
+    'TERCEROS.md'
     'Sheets\Code.gs'
     'External\Office\Configuration.xml'
     'External\Office\Setup.exe'

@@ -1,0 +1,277 @@
+﻿{
+    "version":  1,
+    "apps":  [
+                 {
+                     "Id":  "Microsoft.WindowsFeedbackHub",
+                     "Nombre":  "Feedback Hub",
+                     "Categoria":  "Microsoft",
+                     "Descripcion":  "Envia comentarios y reportes a Microsoft.",
+                     "StoreId":  "9NBLGGH4R32N",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.GetHelp",
+                     "Nombre":  "Obtener ayuda",
+                     "Categoria":  "Microsoft",
+                     "Descripcion":  "Guias de solucion de problemas y soporte de Microsoft.",
+                     "StoreId":  "9PKDZBMV1H3T",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.OutlookForWindows",
+                     "Nombre":  "Outlook",
+                     "Categoria":  "Microsoft",
+                     "Descripcion":  "Correo, calendario y contactos.",
+                     "StoreId":  "9NRX63209R7B",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "MSTeams",
+                     "Nombre":  "Microsoft Teams",
+                     "Categoria":  "Microsoft",
+                     "Descripcion":  "Chat y videollamadas de Microsoft Teams.",
+                     "StoreId":  "XP8BT8DW290MPQ",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Clipchamp.Clipchamp",
+                     "Nombre":  "Clipchamp",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Editor de video integrado.",
+                     "StoreId":  "9P1J8S7CCWWT",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.MicrosoftOfficeHub",
+                     "Nombre":  "Microsoft 365",
+                     "Categoria":  "Microsoft",
+                     "Descripcion":  "Panel de acceso a Microsoft 365.",
+                     "StoreId":  "9WZDNCRD29V9",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.ZuneMusic",
+                     "Nombre":  "Reproductor multimedia",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Reproductor de audio y video.",
+                     "StoreId":  "9WZDNCRFJ3PT",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.BingSearch",
+                     "Nombre":  "Busqueda de Bing",
+                     "Categoria":  "Bing y Web",
+                     "Descripcion":  "Busqueda web de Bing integrada.",
+                     "StoreId":  "9NZBF4GT040C",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "MicrosoftCorporationII.QuickAssist",
+                     "Nombre":  "Asistencia rapida",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Asistencia remota de Microsoft.",
+                     "StoreId":  "9P7BP5VNWKX5",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Windows.DevHome",
+                     "Nombre":  "Dev Home",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Panel para desarrolladores.",
+                     "StoreId":  "9N8MHTPHNGVV",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "MicrosoftWindows.CrossDevice",
+                     "Nombre":  "Dispositivos moviles",
+                     "Categoria":  "Ecosistema",
+                     "Descripcion":  "Conexion con telefonos y dispositivos moviles.",
+                     "StoreId":  "9NTXGKQ8P7N0",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Todos",
+                     "Nombre":  "To Do",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Lista de tareas de Microsoft.",
+                     "StoreId":  "9NBLGGH5R558",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.PowerAutomateDesktop",
+                     "Nombre":  "Power Automate",
+                     "Categoria":  "Desarrollo",
+                     "Descripcion":  "Automatizacion de tareas.",
+                     "StoreId":  "9NFTCH6J7FHV",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.YourPhone",
+                     "Nombre":  "Vinculo con el telefono",
+                     "Categoria":  "Ecosistema",
+                     "Descripcion":  "Vincula el telefono con Windows.",
+                     "StoreId":  "9NMPJ99VJBWV",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.MicrosoftStickyNotes",
+                     "Nombre":  "Notas rapidas",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Notas rapidas.",
+                     "StoreId":  "9NBLGGH4QGHW",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.WindowsSoundRecorder",
+                     "Nombre":  "Grabadora de sonido",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Grabadora de audio.",
+                     "StoreId":  "9WZDNCRFHWKN",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.WindowsAlarms",
+                     "Nombre":  "Reloj",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Reloj, alarmas y temporizador.",
+                     "StoreId":  "9WZDNCRFJ3PR",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Paint",
+                     "Nombre":  "Paint",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Editor de imagenes.",
+                     "StoreId":  "9PCFS5B6T72H",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.WindowsNotepad",
+                     "Nombre":  "Bloc de notas",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Bloc de notas.",
+                     "StoreId":  "9MSMLRH6LZF3",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.ScreenSketch",
+                     "Nombre":  "Recortes",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Capturas y recortes de pantalla.",
+                     "StoreId":  "9MZ95KL8MR0L",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Copilot",
+                     "Nombre":  "Copilot",
+                     "Categoria":  "Bing y Web",
+                     "Descripcion":  "Asistente de IA de Microsoft.",
+                     "StoreId":  "9NHT9RB2F4HD",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.WindowsCalculator",
+                     "Nombre":  "Calculadora",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Calculadora de Windows.",
+                     "StoreId":  "9WZDNCRFHVN5",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.WindowsCamera",
+                     "Nombre":  "Camara",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Aplicacion de camara.",
+                     "StoreId":  "9WZDNCRFJBBG",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.Windows.Photos",
+                     "Nombre":  "Fotos",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Visor y organizador de fotos.",
+                     "StoreId":  "9WZDNCRFJBH4",
+                     "Predeterminada":  false
+                 },
+                 {
+                     "Id":  "Microsoft.BingNews",
+                     "Nombre":  "Noticias",
+                     "Categoria":  "Bing y Web",
+                     "Descripcion":  "Noticias de Microsoft.",
+                     "StoreId":  "9WZDNCRFHVFW",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.BingWeather",
+                     "Nombre":  "Clima",
+                     "Categoria":  "Bing y Web",
+                     "Descripcion":  "Clima y pronostico.",
+                     "StoreId":  "9WZDNCRFJ3Q2",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.GamingApp",
+                     "Nombre":  "Xbox",
+                     "Categoria":  "Xbox y Juegos",
+                     "Descripcion":  "Aplicacion de Xbox y Game Pass.",
+                     "StoreId":  "9MV0B5HZVK9Z",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.XboxGamingOverlay",
+                     "Nombre":  "Xbox Game Bar",
+                     "Categoria":  "Xbox y Juegos",
+                     "Descripcion":  "Barra de juegos de Xbox.",
+                     "StoreId":  "9NZKPSTSNW4P",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.XboxIdentityProvider",
+                     "Nombre":  "Xbox Identity Provider",
+                     "Categoria":  "Xbox y Juegos",
+                     "Descripcion":  "Inicio de sesion de Xbox.",
+                     "StoreId":  "9WZDNCRD1HKW",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.XboxSpeechToTextOverlay",
+                     "Nombre":  "Xbox Speech To Text",
+                     "Categoria":  "Xbox y Juegos",
+                     "Descripcion":  "Dictado por voz de Xbox.",
+                     "StoreId":  "",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.Xbox.TCUI",
+                     "Nombre":  "Xbox TCUI",
+                     "Categoria":  "Xbox y Juegos",
+                     "Descripcion":  "Interfaz de Xbox.",
+                     "StoreId":  "",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.StartExperiencesApp",
+                     "Nombre":  "Experiencias de Inicio",
+                     "Categoria":  "Bing y Web",
+                     "Descripcion":  "Experiencias y sugerencias del menu Inicio.",
+                     "StoreId":  "9PC1H9VN18CM",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.MicrosoftSolitaireCollection",
+                     "Nombre":  "Solitario",
+                     "Categoria":  "Xbox y Juegos",
+                     "Descripcion":  "Juego Solitario de Microsoft.",
+                     "StoreId":  "",
+                     "Predeterminada":  true
+                 },
+                 {
+                     "Id":  "Microsoft.ZuneVideo",
+                     "Nombre":  "Peliculas y TV",
+                     "Categoria":  "Utilidades",
+                     "Descripcion":  "Reproductor de peliculas y TV.",
+                     "StoreId":  "9WZDNCRFJ3P2",
+                     "Predeterminada":  false
+                 }
+             ]
+}
