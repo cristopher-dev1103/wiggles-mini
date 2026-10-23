@@ -1,5 +1,5 @@
 ﻿# =============================================================================
-#  WIGGLES MINI  v1.3
+#  WIGGLES MINI  v1.3.1
 #  Inventario de equipos + utilidades para visitas a clientes.
 #  Portable, sin dependencias: PS1 + catalogos JSON.
 # =============================================================================
@@ -9,7 +9,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $script:AppNombre  = 'WIGGLES MINI'
-$script:AppVersion = '1.3.0'
+$script:AppVersion = '1.3.1'
 
 # --- Ruta raiz (funciona desde USB, carpeta local o red) ---
 $script:Root = $PSScriptRoot
@@ -301,7 +301,7 @@ $Xaml = @'
       <Setter Property="Foreground" Value="{StaticResource Texto}"/>
       <Setter Property="BorderBrush" Value="{StaticResource Borde}"/>
       <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="Padding" Value="14,9"/>
+      <Setter Property="Padding" Value="14,6"/>
       <Setter Property="Margin" Value="0,0,8,8"/>
       <Setter Property="FontSize" Value="12.5"/>
       <Setter Property="Cursor" Value="Hand"/>
@@ -522,6 +522,71 @@ $Xaml = @'
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Foreground" Value="{StaticResource Verde}"/>
       <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <!-- Barras de desplazamiento finas y acordes al tema oscuro -->
+    <ControlTemplate x:Key="BarraVerticalPlantilla" TargetType="ScrollBar">
+      <Grid Background="Transparent" SnapsToDevicePixels="True">
+        <Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="True">
+          <Track.DecreaseRepeatButton>
+            <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Opacity="0"
+                          Focusable="False" IsTabStop="False"/>
+          </Track.DecreaseRepeatButton>
+          <Track.Thumb>
+            <Thumb MinHeight="24" Cursor="Hand">
+              <Thumb.Template>
+                <ControlTemplate TargetType="Thumb">
+                  <Border Background="#2B3A4A" CornerRadius="4" Margin="1,2,1,2"/>
+                </ControlTemplate>
+              </Thumb.Template>
+            </Thumb>
+          </Track.Thumb>
+          <Track.IncreaseRepeatButton>
+            <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Opacity="0"
+                          Focusable="False" IsTabStop="False"/>
+          </Track.IncreaseRepeatButton>
+        </Track>
+      </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="BarraHorizontalPlantilla" TargetType="ScrollBar">
+      <Grid Background="Transparent" SnapsToDevicePixels="True">
+        <Track x:Name="PART_Track" Orientation="Horizontal" IsDirectionReversed="False">
+          <Track.DecreaseRepeatButton>
+            <RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Opacity="0"
+                          Focusable="False" IsTabStop="False"/>
+          </Track.DecreaseRepeatButton>
+          <Track.Thumb>
+            <Thumb MinWidth="24" Cursor="Hand">
+              <Thumb.Template>
+                <ControlTemplate TargetType="Thumb">
+                  <Border Background="#2B3A4A" CornerRadius="4" Margin="2,1,2,1"/>
+                </ControlTemplate>
+              </Thumb.Template>
+            </Thumb>
+          </Track.Thumb>
+          <Track.IncreaseRepeatButton>
+            <RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Opacity="0"
+                          Focusable="False" IsTabStop="False"/>
+          </Track.IncreaseRepeatButton>
+        </Track>
+      </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="ScrollBar">
+      <Setter Property="Width" Value="9"/>
+      <Setter Property="MinWidth" Value="9"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Template" Value="{StaticResource BarraVerticalPlantilla}"/>
+      <Style.Triggers>
+        <Trigger Property="Orientation" Value="Horizontal">
+          <Setter Property="Width" Value="Auto"/>
+          <Setter Property="MinWidth" Value="0"/>
+          <Setter Property="Height" Value="9"/>
+          <Setter Property="MinHeight" Value="9"/>
+          <Setter Property="Template" Value="{StaticResource BarraHorizontalPlantilla}"/>
+        </Trigger>
+      </Style.Triggers>
     </Style>
   </Window.Resources>
 

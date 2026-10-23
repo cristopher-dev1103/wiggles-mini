@@ -45,7 +45,7 @@ Opciones:
 cd "C:\Users\c.rojas\Documents\PROYECTOS_360\REPORTE\2-Wiggles_Mini"
 git init
 git add .
-git commit -m "Wiggles Mini 1.3.0"
+git commit -m "Wiggles Mini 1.3.1"
 git branch -M main
 git remote add origin https://github.com/TU-USUARIO/wiggles-mini.git
 git push -u origin main
